@@ -7,23 +7,27 @@ using ITechArtPizzaDelivery.Domain.Models;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
-    public class PizzasService
+    public class PizzasService : IPizzasService
     {
-        private readonly IPizzasRepository pizzasRepository;
+        private readonly IPizzasRepository _pizzasRepository;
 
-        public PizzasService(IPizzasRepository _pizzasRepository)
+        public PizzasService(IPizzasRepository pizzasRepository)
         {
-            pizzasRepository = _pizzasRepository ?? throw new ArgumentNullException(nameof(_pizzasRepository), "Repository is null");
+            _pizzasRepository = pizzasRepository;
         }
 
-        public List<Pizza> GetAll()
+        public async Task<List<Pizza>> GetAll()
         {
-            return pizzasRepository.GetAll();
+            return await _pizzasRepository.GetAll();
         }
 
-        public Pizza GetById(int id)
+        public Task<Pizza> GetById(long id)
         {
-            return pizzasRepository.GetById(id);
+            return _pizzasRepository.GetById(id);
+        }
+        public Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
+        {
+            return _pizzasRepository.Post(pizza, ingredientsId);
         }
     }
 }
