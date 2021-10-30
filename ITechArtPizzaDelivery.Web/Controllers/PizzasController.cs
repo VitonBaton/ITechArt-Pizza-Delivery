@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ITechArtPizzaDelivery.Domain.Services;
-using ITechArtPizzaDelivery.Infrastructure.Repositories.Fakes;
+using ITechArtPizzaDelivery.Infrastructure.Repositories;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -11,18 +12,30 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     [ApiController]
     public class PizzasController : ControllerBase
     {
-        private readonly PizzasService _pizzasService = new(new PizzasFakeRepository());
+        private readonly IPizzasService _pizzasService;
+
+        public PizzasController(IPizzasService service)
+        {
+            _pizzasService = service;
+        }
 
         [HttpGet]
-        public List<Pizza> GetAll()
+        public Task<List<Pizza>> GetAll()
         {
             return _pizzasService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public Pizza GetById(int id)
+        public Task<Pizza> GetById(long id)
         {
             return _pizzasService.GetById(id);
+        }
+
+        [HttpPost]
+        public Task<Pizza> Post(Pizza pizza, [FromQuery] long[] ingredientsId)
+        {
+            
+            return _pizzasService.Post(pizza, ingredientsId);
         }
     }
 }
