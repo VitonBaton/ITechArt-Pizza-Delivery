@@ -21,7 +21,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
 
         async Task<Pizza> IPizzasRepository.GetById(long id)
         {
-            return await _dbContext.Pizzas.FindAsync(id);
+            return await _dbContext.Pizzas.Include(p => p.Ingredients).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
