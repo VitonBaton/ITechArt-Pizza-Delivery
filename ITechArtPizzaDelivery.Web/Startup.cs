@@ -11,6 +11,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Interfaces;
+using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Services;
+using ITechArtPizzaDelivery.Infrastructure.Contexts;
+using ITechArtPizzaDelivery.Infrastructure.Repositories;
+using ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web
 {
@@ -26,8 +34,18 @@ namespace ITechArtPizzaDelivery.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Domain
+            services.AddScoped<IPizzasService, PizzasService>();
+            services.AddScoped<IIngredientsService, IngredientsService>();
+            // Infrastructure
+            services.AddScoped<IPizzasRepository, PizzasRepository>();
+            services.AddScoped<IIngredientsRepository, IngredientsRepository>();
 
-            services.AddControllers();
+            services.AddDbContext<PizzaDeliveryContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITechArtPizzaDelivery.Web", Version = "v1" });
