@@ -20,21 +20,21 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpGet]
-        public Task<List<Ingredient>> GetAll()
+        public async Task<List<Ingredient>> GetAll()
         {
-            return _ingredientsService.GetAll();
+            return await _ingredientsService.GetAll();
         }
 
         [HttpGet("{id}")]
-        public Task<Ingredient> GetById(int id)
+        public async Task<Ingredient> GetById(int id)
         {
-            return _ingredientsService.GetById(id);
+            return await _ingredientsService.GetById(id);
         }
 
         [HttpPost]
-        public Task<Ingredient> Post(Ingredient ingredient)
+        public async Task<Ingredient> Post(Ingredient ingredient)
         {
-            return _ingredientsService.Post(ingredient);
+            return await _ingredientsService.Post(ingredient);
         }
     }
 }

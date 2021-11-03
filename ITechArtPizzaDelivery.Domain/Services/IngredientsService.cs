@@ -17,18 +17,18 @@ namespace ITechArtPizzaDelivery.Domain.Services
             _ingredientsRepository = ingredientsRepository;
         }
 
-        public Task<List<Ingredient>> GetAll()
+        public async Task<List<Ingredient>> GetAll()
         {
-            return _ingredientsRepository.GetAll();
+            return await _ingredientsRepository.GetAll();
         }
 
-        public Task<Ingredient> GetById(long id)
+        public async Task<Ingredient> GetById(long id)
         {
-            return _ingredientsRepository.GetById(id);
+            return await _ingredientsRepository.GetById(id);
         }
-        public Task<Ingredient> Post(Ingredient ingredient)
+        public async Task<Ingredient> Post(Ingredient ingredient)
         {
-            return _ingredientsRepository.Post(ingredient);
+            return await _ingredientsRepository.Post(ingredient);
         }
     }
 }
