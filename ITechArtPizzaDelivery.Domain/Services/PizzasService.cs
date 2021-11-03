@@ -21,13 +21,18 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return await _pizzasRepository.GetAll();
         }
 
-        public Task<Pizza> GetById(long id)
+        public async Task<Pizza> GetById(long id)
         {
-            return _pizzasRepository.GetById(id);
+            return await _pizzasRepository.GetById(id);
         }
-        public Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
+        public async Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
         {
-            return _pizzasRepository.Post(pizza, ingredientsId);
+            return await _pizzasRepository.Post(pizza, ingredientsId);
+        }
+
+        public async Task DeleteById(long id)
+        {
+            await _pizzasRepository.DeleteById(id);
         }
     }
 }

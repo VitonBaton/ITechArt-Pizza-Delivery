@@ -21,7 +21,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
 
         async Task<Pizza> IPizzasRepository.GetById(long id)
         {
-            return await _dbContext.Pizzas.Include(p => p.Ingredients).FirstOrDefaultAsync(p => p.Id == id);
+            return await _dbContext.Pizzas
+                .Include(p => p.Ingredients)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
@@ -34,6 +36,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             _dbContext.Pizzas.Add(pizza);
             await _dbContext.SaveChangesAsync();
             return pizza;
+        }
+
+        public async Task DeleteById(long id)
+        {
+            var pizza = await _dbContext.Pizzas.FindAsync(id);
+            _dbContext.Pizzas.Remove(pizza);
+            await _dbContext.SaveChangesAsync();
         }
 
         async Task<List<Pizza>> IPizzasRepository.GetAll()

@@ -9,5 +9,6 @@ namespace ITechArtPizzaDelivery.Domain.Services
         Task<List<Pizza>> GetAll();
         Task<Pizza> GetById(long id);
         Task<Pizza> Post(Pizza pizza, long[] ingredientsId);
+        public Task DeleteById(long id);
     }
 }
