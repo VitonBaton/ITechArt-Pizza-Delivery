@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Domain.Services;
+using ITechArtPizzaDelivery.Web.Models;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -33,16 +35,20 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<Promocode> Post(Promocode promocode)
+        public async Task<Promocode> Post(PostPromocodeModel model)
         {
+            var config = new MapperConfiguration(cfg =>
+                cfg.CreateMap<PostPromocodeModel, Promocode>());
 
+            var mapper = config.CreateMapper();
+            var promocode = mapper.Map<PostPromocodeModel, Promocode>(model);
             return await _promocodesService.Post(promocode);
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteById(long id)
+        public async Task<IActionResult> DeleteById(long id)
         {
-            await _promocodesService.DeleteById(id);
+            return await _promocodesService.DeleteById(id);
         }
     }
 }
