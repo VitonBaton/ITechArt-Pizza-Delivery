@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ITechArtPizzaDelivery.Domain.Interfaces
 {
@@ -12,5 +13,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         public Task<List<Ingredient>> GetAll();
         public Task<Ingredient> GetById(long id);
         public Task<Ingredient> Post(Ingredient ingredient);
+        public Task<IActionResult> DeleteById(long id);
     }
 }
