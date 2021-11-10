@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 {
-    public class PromocodesRepository
+    public class PromocodesRepository : IPromocodesRepository
     {
         private readonly PizzaDeliveryContext _dbContext;
 
