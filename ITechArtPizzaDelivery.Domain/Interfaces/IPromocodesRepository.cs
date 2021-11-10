@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
+namespace ITechArtPizzaDelivery.Domain.Interfaces
 {
     public interface IPromocodesRepository
     {

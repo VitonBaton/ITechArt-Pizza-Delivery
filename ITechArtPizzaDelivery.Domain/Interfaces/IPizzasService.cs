@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
 
-namespace ITechArtPizzaDelivery.Domain.Services
+namespace ITechArtPizzaDelivery.Domain.Interfaces
 {
     public interface IPizzasService
     {
