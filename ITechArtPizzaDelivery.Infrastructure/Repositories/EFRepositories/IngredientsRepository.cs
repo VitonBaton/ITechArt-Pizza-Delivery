@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
@@ -34,6 +35,19 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
         public async Task<List<Ingredient>> GetAll()
         {
             return await _dbContext.Ingredients.ToListAsync();
+        }
+
+        public async Task<IActionResult> DeleteById(long id)
+        {
+            var ingredient = await _dbContext.Ingredients.FindAsync(id);
+            if (ingredient is null)
+            {
+                return new NotFoundResult();
+            }
+
+            _dbContext.Remove(ingredient);
+            await _dbContext.SaveChangesAsync();
+            return new OkResult();
         }
     }
 }

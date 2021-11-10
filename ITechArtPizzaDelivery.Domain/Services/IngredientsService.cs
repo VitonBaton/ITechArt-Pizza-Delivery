@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
@@ -29,6 +30,11 @@ namespace ITechArtPizzaDelivery.Domain.Services
         public async Task<Ingredient> Post(Ingredient ingredient)
         {
             return await _ingredientsRepository.Post(ingredient);
+        }
+
+        public async Task<IActionResult> DeleteById(long id)
+        {
+            return await _ingredientsRepository.DeleteById(id);
         }
     }
 }

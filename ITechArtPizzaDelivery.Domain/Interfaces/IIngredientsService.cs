@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
@@ -9,5 +10,6 @@ namespace ITechArtPizzaDelivery.Domain.Services
         Task<List<Ingredient>> GetAll();
         Task<Ingredient> GetById(long id);
         Task<Ingredient> Post(Ingredient ingredient);
+        public Task<IActionResult> DeleteById(long id);
     }
 }
