@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
+using ITechArtPizzaDelivery.Web.Models;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -32,10 +34,13 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<Pizza> Post(Pizza pizza, [FromQuery] long[] ingredientsId)
+        public async Task<Pizza> Post(PostPizzaModel model)
         {
-            
-            return await _pizzasService.Post(pizza, ingredientsId);
+            var config = new MapperConfiguration(cfg => 
+                cfg.CreateMap<PostPizzaModel, Pizza>());
+            var mapper = config.CreateMapper();
+            var pizza = mapper.Map<PostPizzaModel, Pizza>(model);
+            return await _pizzasService.Post(pizza, model.IngredientsId);
         }
 
         [HttpDelete("{id}")]

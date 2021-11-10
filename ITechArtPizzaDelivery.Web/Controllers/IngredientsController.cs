@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Domain.Services;
+using ITechArtPizzaDelivery.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
@@ -32,9 +34,20 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<Ingredient> Post(Ingredient ingredient)
+        public async Task<Ingredient> Post(PostIngredientModel model)
         {
+            var config = new MapperConfiguration(cfg =>
+                cfg.CreateMap<PostIngredientModel, Ingredient>());
+
+            var mapper = config.CreateMapper();
+            var ingredient = mapper.Map<PostIngredientModel, Ingredient>(model);
             return await _ingredientsService.Post(ingredient);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteById(long id)
+        {
+            return await _ingredientsService.DeleteById(id);
         }
     }
 }
