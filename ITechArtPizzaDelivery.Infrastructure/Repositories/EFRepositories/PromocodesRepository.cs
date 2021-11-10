@@ -37,13 +37,12 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             return await _dbContext.Promocodes.FindAsync(id);
         }
 
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task DeleteById(long id)
         {
             var promocode = await _dbContext.Promocodes
                             .FindAsync(id);
             _dbContext.Promocodes.Remove(promocode);
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
         }
     }
 }

@@ -10,6 +10,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         Task<List<Promocode>> GetAll();
         Task<Promocode> GetById(long id);
         Task<Promocode> Post(Promocode promocode);
-        Task<IActionResult> DeleteById(long id);
+        Task DeleteById(long id);
     }
 }
