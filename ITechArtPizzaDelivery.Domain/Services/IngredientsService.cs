@@ -32,9 +32,9 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return await _ingredientsRepository.Post(ingredient);
         }
 
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task DeleteById(long id)
         {
-            return await _ingredientsRepository.DeleteById(id);
+            await _ingredientsRepository.DeleteById(id);
         }
     }
 }
