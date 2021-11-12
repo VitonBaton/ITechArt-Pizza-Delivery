@@ -45,9 +45,10 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteById(long id)
+        public async Task<IActionResult> DeleteById(long id)
         {
             await _pizzasService.DeleteById(id);
+            return Ok();
         }
 
     }
