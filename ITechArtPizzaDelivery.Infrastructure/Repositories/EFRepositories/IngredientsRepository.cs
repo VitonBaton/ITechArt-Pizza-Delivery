@@ -37,17 +37,12 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             return await _dbContext.Ingredients.ToListAsync();
         }
 
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task DeleteById(long id)
         {
             var ingredient = await _dbContext.Ingredients.FindAsync(id);
-            if (ingredient is null)
-            {
-                return new NotFoundResult();
-            }
 
             _dbContext.Remove(ingredient);
             await _dbContext.SaveChangesAsync();
-            return new OkResult();
         }
     }
 }
