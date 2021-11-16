@@ -18,5 +18,7 @@ namespace ITechArtPizzaDelivery.Domain.Models
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
         public List<Ingredient> Ingredients { get; set; }
+        public List<Cart> Carts { get; set; }
+        public List<CartPizza> CartPizzas { get; set; }
     }
 }

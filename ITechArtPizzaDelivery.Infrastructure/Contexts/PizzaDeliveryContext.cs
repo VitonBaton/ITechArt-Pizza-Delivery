@@ -31,6 +31,38 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 .Property(o => o.Status)
                 .HasConversion<int>();
 
+            /*modelBuilder.Entity<CartPizza>()
+                .HasKey(cp => new {cp.CartId, cp.PizzaId});
+            modelBuilder.Entity<CartPizza>()
+                .HasOne(cp => cp.Cart)
+                .WithMany(c => c.CartPizzas)
+                .HasForeignKey(cp => cp.CartId);
+            modelBuilder.Entity<CartPizza>()
+                .HasOne(cp => cp.Pizza)
+                .WithMany(p => p.CartPizzas)
+                .HasForeignKey(cp => cp.PizzaId);
+            */
+            modelBuilder.Entity<Cart>()
+                .HasMany(c => c.Pizzas)
+                .WithMany(p => p.Carts)
+                .UsingEntity<CartPizza>(
+                    j => j
+                        .HasOne(cp => cp.Pizza)
+                        .WithMany(c => c.CartPizzas)
+                        .HasForeignKey(cp => cp.PizzaId)
+                        .OnDelete(DeleteBehavior.SetNull),
+                    j=>j
+                        .HasOne(cp => cp.Cart)
+                        .WithMany(c => c.CartPizzas)
+                        .HasForeignKey(cp => cp.CartId)
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j =>
+                    {
+                        j.HasKey(cp => new {cp.CartId, cp.PizzaId});
+                        j.ToTable("carts_pizzas");
+                    }
+                );
+
             base.OnModelCreating(modelBuilder);
         }
     }
