@@ -17,33 +17,33 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     public class PromocodesController : ControllerBase
     {
         private readonly IPromocodesService _promocodesService;
-
-        public PromocodesController(IPromocodesService service)
+        private readonly IMapper _mapper;
+        public PromocodesController(IPromocodesService service, IMapper mapper)
         {
             _promocodesService = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<List<Promocode>> GetAll()
+        public async Task<List<GetPromocodeModel>> GetAll()
         {
-            return await _promocodesService.GetAll();
+            var promocodes = await _promocodesService.GetAll();
+            return _mapper.Map<List<GetPromocodeModel>>(promocodes);
         }
 
         [HttpGet("{id}")]
-        public async Task<Promocode> GetById(long id)
+        public async Task<GetPromocodeModel> GetById(long id)
         {
-            return await _promocodesService.GetById(id);
+            var promocode = await _promocodesService.GetById(id);
+            return _mapper.Map<GetPromocodeModel>(promocode);
         }
 
         [HttpPost]
-        public async Task<Promocode> Post(PostPromocodeModel model)
+        public async Task<GetPromocodeModel> Post(PostPromocodeModel model)
         {
-            var config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<PostPromocodeModel, Promocode>());
-
-            var mapper = config.CreateMapper();
-            var promocode = mapper.Map<PostPromocodeModel, Promocode>(model);
-            return await _promocodesService.Post(promocode);
+            var promocode = _mapper.Map<PostPromocodeModel, Promocode>(model);
+            var newPromocode = await _promocodesService.Post(promocode);
+            return _mapper.Map<GetPromocodeModel>(newPromocode);
         }
 
         [HttpDelete("{id}")]

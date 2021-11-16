@@ -16,33 +16,35 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     public class IngredientsController : ControllerBase
     {
         private readonly IIngredientsService _ingredientsService;
+        private readonly IMapper _mapper;
 
-        public IngredientsController(IIngredientsService service)
+        public IngredientsController(IIngredientsService service, IMapper mapper)
         {
             _ingredientsService = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<List<Ingredient>> GetAll()
+        public async Task<List<GetIngredientModel>> GetAll()
         {
-            return await _ingredientsService.GetAll();
+            var ingredients = await _ingredientsService.GetAll();
+            var viewIngredients = _mapper.Map<List<GetIngredientModel>>(ingredients);
+            return viewIngredients;
         }
 
         [HttpGet("{id}")]
-        public async Task<Ingredient> GetById(int id)
+        public async Task<GetIngredientModel> GetById(int id)
         {
-            return await _ingredientsService.GetById(id);
+            var ingredient = await _ingredientsService.GetById(id);
+            return _mapper.Map<GetIngredientModel>(ingredient);
         }
 
         [HttpPost]
-        public async Task<Ingredient> Post(PostIngredientModel model)
+        public async Task<GetIngredientModel> Post(PostIngredientModel model)
         {
-            var config = new MapperConfiguration(cfg =>
-                cfg.CreateMap<PostIngredientModel, Ingredient>());
-
-            var mapper = config.CreateMapper();
-            var ingredient = mapper.Map<PostIngredientModel, Ingredient>(model);
-            return await _ingredientsService.Post(ingredient);
+            var ingredient = _mapper.Map<Ingredient>(model);
+            var newIngredient = await _ingredientsService.Post(ingredient);
+            return _mapper.Map<GetIngredientModel>(newIngredient);
         }
 
         [HttpDelete("{id}")]

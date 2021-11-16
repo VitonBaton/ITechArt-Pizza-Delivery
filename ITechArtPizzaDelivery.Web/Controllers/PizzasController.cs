@@ -16,32 +16,36 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     public class PizzasController : ControllerBase
     {
         private readonly IPizzasService _pizzasService;
+        private readonly IMapper _mapper;
 
-        public PizzasController(IPizzasService service)
+        public PizzasController(IPizzasService service, IMapper mapper)
         {
             _pizzasService = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<List<Pizza>> GetAll()
+        public async Task<List<GetAllPizzasModel>> GetAll()
         {
-            return await _pizzasService.GetAll();
+            var pizzas = await _pizzasService.GetAll();
+            var pizzasView = _mapper.Map<List<Pizza>, List<GetAllPizzasModel>>(pizzas);
+            return pizzasView;
         }
 
         [HttpGet("{id}")]
-        public async Task<Pizza> GetById(long id)
+        public async Task<GetPizzaModel> GetById(long id)
         {
-            return await _pizzasService.GetById(id);
+            var pizza = await _pizzasService.GetById(id);
+            var pizzaView = _mapper.Map<Pizza, GetPizzaModel>(pizza);
+            return pizzaView;
         }
 
         [HttpPost]
-        public async Task<Pizza> Post(PostPizzaModel model)
+        public async Task<GetPizzaModel> Post(PostPizzaModel model)
         {
-            var config = new MapperConfiguration(cfg => 
-                cfg.CreateMap<PostPizzaModel, Pizza>());
-            var mapper = config.CreateMapper();
-            var pizza = mapper.Map<PostPizzaModel, Pizza>(model);
-            return await _pizzasService.Post(pizza, model.IngredientsId);
+            var pizza = _mapper.Map<PostPizzaModel, Pizza>(model);
+            var newPizza = await _pizzasService.Post(pizza, model.IngredientsId);
+            return _mapper.Map<GetPizzaModel>(newPizza);
         }
 
         [HttpDelete("{id}")]
