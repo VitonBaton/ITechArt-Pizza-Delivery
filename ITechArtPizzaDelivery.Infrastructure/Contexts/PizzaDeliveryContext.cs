@@ -18,7 +18,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Promocode> Promocodes { get; set; }
-        public DbSet<Status> Statuses { get; set; }
 
         public PizzaDeliveryContext(DbContextOptions<PizzaDeliveryContext> options) 
             : base(options)
@@ -26,5 +25,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
             Database.EnsureCreated();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status)
+                .HasConversion<int>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

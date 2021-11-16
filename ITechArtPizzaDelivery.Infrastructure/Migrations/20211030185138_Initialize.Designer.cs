@@ -203,7 +203,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                     b.ToTable("Promocodes");
                 });
 
-            modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Status", b =>
+            modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.StatusType", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,7 +295,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("PromocodeId");
 
-                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.Status", "Status")
+                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.StatusType", "StatusType")
                         .WithMany()
                         .HasForeignKey("StatusId");
 
@@ -309,7 +309,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
                     b.Navigation("Promocode");
 
-                    b.Navigation("Status");
+                    b.Navigation("StatusType");
 
                     b.Navigation("User");
                 });
