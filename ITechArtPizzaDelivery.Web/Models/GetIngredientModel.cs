@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace ITechArtPizzaDelivery.Web.Models
 {
-    public class PostPizzaModel
+    public class GetIngredientModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
-        public decimal Price { get; set; }
-        // change long to int
-        public long[] IngredientsId { get; set; }
     }
 }
