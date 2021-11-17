@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
@@ -25,34 +26,41 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetAllPizzasModel>> GetAll()
+        public async Task<ActionResult<List<GetPizzaModel>>> GetAll()
         {
             var pizzas = await _pizzasService.GetAll();
-            var pizzasView = _mapper.Map<List<Pizza>, List<GetAllPizzasModel>>(pizzas);
-            return pizzasView;
+            var pizzasView = _mapper.Map<List<Pizza>, List<GetPizzaModel>>(pizzas);
+            return Ok(pizzasView);
         }
 
         [HttpGet("{id}")]
-        public async Task<GetPizzaModel> GetById(long id)
+        public async Task<ActionResult<GetPizzaWithIngredientsModel>> GetById(int id)
         {
             var pizza = await _pizzasService.GetById(id);
-            var pizzaView = _mapper.Map<Pizza, GetPizzaModel>(pizza);
-            return pizzaView;
+            var pizzaView = _mapper.Map<Pizza, GetPizzaWithIngredientsModel>(pizza);
+            return Ok(pizzaView);
         }
 
         [HttpPost]
-        public async Task<GetPizzaModel> Post(PostPizzaModel model)
+        public async Task<ActionResult<GetPizzaWithIngredientsModel>> Post(PostPizzaModel model)
         {
             var pizza = _mapper.Map<PostPizzaModel, Pizza>(model);
             var newPizza = await _pizzasService.Post(pizza, model.IngredientsId);
-            return _mapper.Map<GetPizzaModel>(newPizza);
+            return _mapper.Map<GetPizzaWithIngredientsModel>(newPizza);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task<IActionResult> DeleteById(int id)
         {
-            await _pizzasService.DeleteById(id);
-            return Ok();
+            try
+            {
+                await _pizzasService.DeleteById(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
     }

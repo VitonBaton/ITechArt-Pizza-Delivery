@@ -25,29 +25,29 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetPromocodeModel>> GetAll()
+        public async Task<ActionResult<List<GetPromocodeModel>>> GetAll()
         {
             var promocodes = await _promocodesService.GetAll();
-            return _mapper.Map<List<GetPromocodeModel>>(promocodes);
+            return Ok(_mapper.Map<List<GetPromocodeModel>>(promocodes));
         }
 
         [HttpGet("{id}")]
-        public async Task<GetPromocodeModel> GetById(long id)
+        public async Task<ActionResult<GetPromocodeModel>> GetById(int id)
         {
             var promocode = await _promocodesService.GetById(id);
-            return _mapper.Map<GetPromocodeModel>(promocode);
+            return Ok(_mapper.Map<GetPromocodeModel>(promocode));
         }
 
         [HttpPost]
-        public async Task<GetPromocodeModel> Post(PostPromocodeModel model)
+        public async Task<ActionResult<GetPromocodeModel>> Post(PostPromocodeModel model)
         {
             var promocode = _mapper.Map<PostPromocodeModel, Promocode>(model);
             var newPromocode = await _promocodesService.Post(promocode);
-            return _mapper.Map<GetPromocodeModel>(newPromocode);
+            return Ok(_mapper.Map<GetPromocodeModel>(newPromocode));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task<IActionResult> DeleteById(int id)
         {
             await _promocodesService.DeleteById(id);
             return Ok();

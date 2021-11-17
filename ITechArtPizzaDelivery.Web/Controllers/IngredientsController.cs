@@ -25,30 +25,30 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetIngredientModel>> GetAll()
+        public async Task<ActionResult<List<GetIngredientModel>>> GetAll()
         {
             var ingredients = await _ingredientsService.GetAll();
             var viewIngredients = _mapper.Map<List<GetIngredientModel>>(ingredients);
-            return viewIngredients;
+            return Ok(viewIngredients);
         }
 
         [HttpGet("{id}")]
-        public async Task<GetIngredientModel> GetById(int id)
+        public async Task<ActionResult<GetIngredientModel>> GetById(int id)
         {
             var ingredient = await _ingredientsService.GetById(id);
-            return _mapper.Map<GetIngredientModel>(ingredient);
+            return Ok(_mapper.Map<GetIngredientModel>(ingredient));
         }
 
         [HttpPost]
-        public async Task<GetIngredientModel> Post(PostIngredientModel model)
+        public async Task<ActionResult<GetIngredientModel>> Post(PostIngredientModel model)
         {
             var ingredient = _mapper.Map<Ingredient>(model);
             var newIngredient = await _ingredientsService.Post(ingredient);
-            return _mapper.Map<GetIngredientModel>(newIngredient);
+            return Ok(_mapper.Map<GetIngredientModel>(newIngredient));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteById(long id)
+        public async Task<IActionResult> DeleteById(int id)
         {
             await _ingredientsService.DeleteById(id);
             return Ok();
