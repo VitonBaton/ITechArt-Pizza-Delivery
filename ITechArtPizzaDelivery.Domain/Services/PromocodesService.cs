@@ -15,7 +15,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
             _promocodesRepository = promocodesRepository;
         }
 
-        public async Task DeleteById(long id)
+        public async Task DeleteById(int id)
         {
             await _promocodesRepository.DeleteById(id);
         }
@@ -25,7 +25,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return await _promocodesRepository.GetAll();
         }
 
-        public async Task<Promocode> GetById(long id)
+        public async Task<Promocode> GetById(int id)
         {
             return await _promocodesRepository.GetById(id);
         }

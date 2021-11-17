@@ -50,7 +50,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                         .HasOne(cp => cp.Pizza)
                         .WithMany(c => c.CartPizzas)
                         .HasForeignKey(cp => cp.PizzaId)
-                        .OnDelete(DeleteBehavior.SetNull),
+                        .OnDelete(DeleteBehavior.Cascade),
                     j=>j
                         .HasOne(cp => cp.Cart)
                         .WithMany(c => c.CartPizzas)

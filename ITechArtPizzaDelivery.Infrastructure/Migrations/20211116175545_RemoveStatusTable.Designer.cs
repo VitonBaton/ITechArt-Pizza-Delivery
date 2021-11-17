@@ -201,7 +201,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                     b.ToTable("Promocodes");
                 });
 
-            modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.User", b =>
+            modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Customer", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,7 +241,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Cart", b =>
                 {
-                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.User", "Customer")
+                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId");
 
@@ -278,7 +278,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("PromocodeId");
 
-                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.User", "User")
+                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -288,7 +288,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
                     b.Navigation("Promocode");
 
-                    b.Navigation("User");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("IngredientPizza", b =>

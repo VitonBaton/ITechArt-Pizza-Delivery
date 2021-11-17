@@ -10,7 +10,7 @@ namespace ITechArtPizzaDelivery.Domain.Models
 {
     public class Delivery
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

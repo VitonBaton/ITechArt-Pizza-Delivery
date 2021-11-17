@@ -21,16 +21,16 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Cart", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("CustomerId")
+                    b.Property<long>("CustomerId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("OrderId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -43,11 +43,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.CartPizza", b =>
                 {
-                    b.Property<long>("CartId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("PizzaId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PizzaId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
@@ -61,9 +61,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Delivery", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -84,9 +84,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Ingredient", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
@@ -100,9 +100,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Order", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
@@ -116,25 +116,27 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("DeliveryId")
+                    b.Property<long?>("CustomerId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("PaymentId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(5,2)");
 
-                    b.Property<long?>("PromocodeId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("PromocodeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("DeliveryId")
                         .IsUnique();
@@ -144,16 +146,14 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
                     b.HasIndex("PromocodeId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Payment", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
@@ -169,9 +169,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Pizza", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Image")
@@ -192,9 +192,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Promocode", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Discount")
@@ -234,11 +234,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("IngredientPizza", b =>
                 {
-                    b.Property<long>("IngredientsId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("PizzasId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PizzasId")
+                        .HasColumnType("int");
 
                     b.HasKey("IngredientsId", "PizzasId");
 
@@ -251,7 +251,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                 {
                     b.HasOne("ITechArtPizzaDelivery.Domain.Models.User", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ITechArtPizzaDelivery.Domain.Models.Order", "Order")
                         .WithMany()
@@ -283,6 +285,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Order", b =>
                 {
+                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
                     b.HasOne("ITechArtPizzaDelivery.Domain.Models.Delivery", "Delivery")
                         .WithOne("Order")
                         .HasForeignKey("ITechArtPizzaDelivery.Domain.Models.Order", "DeliveryId")
@@ -299,17 +305,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("PromocodeId");
 
-                    b.HasOne("ITechArtPizzaDelivery.Domain.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Customer");
 
                     b.Navigation("Delivery");
 
                     b.Navigation("Payment");
 
                     b.Navigation("Promocode");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IngredientPizza", b =>

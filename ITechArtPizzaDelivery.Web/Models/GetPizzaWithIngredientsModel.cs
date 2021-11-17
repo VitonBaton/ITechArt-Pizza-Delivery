@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace ITechArtPizzaDelivery.Web.Models
 {
-    public class GetAllPizzasModel
+    public class GetPizzaWithIngredientsModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
         public decimal Price { get; set; }
+        public List<GetIngredientModel> Ingredients { get; set; }
     }
 }

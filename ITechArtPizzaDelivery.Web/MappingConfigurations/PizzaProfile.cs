@@ -12,8 +12,8 @@ namespace ITechArtPizzaDelivery.Web.MappingConfigurations
     {
         public PizzaProfile()
         {
-            CreateMap<Pizza, GetAllPizzasModel>();
             CreateMap<Pizza, GetPizzaModel>();
+            CreateMap<Pizza, GetPizzaWithIngredientsModel>();
             CreateMap<PostPizzaModel, Pizza>();
         }
     }

@@ -19,14 +19,14 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             _dbContext = context;
         }
 
-        async Task<Pizza> IPizzasRepository.GetById(long id)
+        async Task<Pizza> IPizzasRepository.GetById(int id)
         {
             return await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Pizza> Post(Pizza pizza, long[] ingredientsId)
+        public async Task<Pizza> Post(Pizza pizza, int[] ingredientsId)
         {
             var ingredients = _dbContext.Ingredients
                                                     .Where(i => ingredientsId.Contains(i.Id));
@@ -38,9 +38,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             return pizza;
         }
 
-        public async Task DeleteById(long id)
+        public async Task DeleteById(int id)
         {
             var pizza = await _dbContext.Pizzas.FindAsync(id);
+            if (pizza is null)
+            {
+                throw new KeyNotFoundException("Pizza with that id not found");
+            }
             _dbContext.Pizzas.Remove(pizza);
             await _dbContext.SaveChangesAsync();
         }

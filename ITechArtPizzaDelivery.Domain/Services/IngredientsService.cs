@@ -23,7 +23,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return await _ingredientsRepository.GetAll();
         }
 
-        public async Task<Ingredient> GetById(long id)
+        public async Task<Ingredient> GetById(int id)
         {
             return await _ingredientsRepository.GetById(id);
         }
@@ -32,7 +32,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return await _ingredientsRepository.Post(ingredient);
         }
 
-        public async Task DeleteById(long id)
+        public async Task DeleteById(int id)
         {
             await _ingredientsRepository.DeleteById(id);
         }

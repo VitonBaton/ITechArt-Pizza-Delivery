@@ -8,8 +8,8 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     public interface IPromocodesService
     {
         Task<List<Promocode>> GetAll();
-        Task<Promocode> GetById(long id);
+        Task<Promocode> GetById(int id);
         Task<Promocode> Post(Promocode promocode);
-        Task DeleteById(long id);
+        Task DeleteById(int id);
     }
 }

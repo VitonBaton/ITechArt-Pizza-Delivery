@@ -10,8 +10,8 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     public interface IPizzasRepository
     {
         public Task<List<Pizza>> GetAll();
-        public Task<Pizza> GetById(long id);
-        public Task<Pizza> Post(Pizza pizza, long[] ingredientsId);
-        public Task DeleteById(long id);
+        public Task<Pizza> GetById(int id);
+        public Task<Pizza> Post(Pizza pizza, int[] ingredientsId);
+        public Task DeleteById(int id);
     }
 }

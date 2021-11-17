@@ -20,8 +20,9 @@ namespace ITechArtPizzaDelivery.Domain.Models
             Done
         }
 
-        public long Id { get; set; }
-        public User User { get; set; }
+        public int Id { get; set; }
+        [ForeignKey("CustomerId")]
+        public User Customer { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]
@@ -32,6 +33,7 @@ namespace ITechArtPizzaDelivery.Domain.Models
         public Payment Payment { get; set; }
         [Required]
         public string Comment { get; set; }
+        [ForeignKey("PromocodeId")]
         public Promocode Promocode { get; set; }
         public DateTime CreateAt { get; set; }
         [Column(TypeName = "decimal(5, 2)")]

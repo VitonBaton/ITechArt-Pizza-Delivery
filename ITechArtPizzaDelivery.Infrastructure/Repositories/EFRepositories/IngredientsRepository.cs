@@ -20,7 +20,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             _dbContext = context;
         }
 
-        public async Task<Ingredient> GetById(long id)
+        public async Task<Ingredient> GetById(int id)
         {
             return await _dbContext.Ingredients.FindAsync(id);
         }
@@ -37,7 +37,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             return await _dbContext.Ingredients.ToListAsync();
         }
 
-        public async Task DeleteById(long id)
+        public async Task DeleteById(int id)
         {
             var ingredient = await _dbContext.Ingredients.FindAsync(id);
 

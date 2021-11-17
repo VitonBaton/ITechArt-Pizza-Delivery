@@ -32,12 +32,12 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             return await _dbContext.Promocodes.ToListAsync();
         }
 
-        public async Task<Promocode> GetById(long id)
+        public async Task<Promocode> GetById(int id)
         {
             return await _dbContext.Promocodes.FindAsync(id);
         }
 
-        public async Task DeleteById(long id)
+        public async Task DeleteById(int id)
         {
             var promocode = await _dbContext.Promocodes
                             .FindAsync(id);

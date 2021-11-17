@@ -8,7 +8,7 @@ namespace ITechArtPizzaDelivery.Domain.Models
 {
     public class Ingredient
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         public List<Pizza> Pizzas { get; set; }
