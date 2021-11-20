@@ -34,23 +34,44 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPromocodeModel>> GetById(int id)
         {
-            var promocode = await _promocodesService.GetById(id);
-            return Ok(_mapper.Map<GetPromocodeModel>(promocode));
+            try
+            {
+                var promocode = await _promocodesService.GetById(id);
+                return Ok(_mapper.Map<GetPromocodeModel>(promocode));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<GetPromocodeModel>> Post(PostPromocodeModel model)
         {
-            var promocode = _mapper.Map<PostPromocodeModel, Promocode>(model);
-            var newPromocode = await _promocodesService.Post(promocode);
-            return Ok(_mapper.Map<GetPromocodeModel>(newPromocode));
+            try
+            {
+                var promocode = _mapper.Map<PostPromocodeModel, Promocode>(model);
+                var newPromocode = await _promocodesService.Post(promocode);
+                return Ok(_mapper.Map<GetPromocodeModel>(newPromocode));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            await _promocodesService.DeleteById(id);
-            return Ok();
+            try
+            {
+                await _promocodesService.DeleteById(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
     }
 }

@@ -35,8 +35,15 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetIngredientModel>> GetById(int id)
         {
-            var ingredient = await _ingredientsService.GetById(id);
-            return Ok(_mapper.Map<GetIngredientModel>(ingredient));
+            try
+            {
+                var ingredient = await _ingredientsService.GetById(id);
+                return Ok(_mapper.Map<GetIngredientModel>(ingredient));
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new KeyNotFoundException(e.Message);
+            }
         }
 
         [HttpPost]
@@ -50,8 +57,15 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            await _ingredientsService.DeleteById(id);
-            return Ok();
+            try
+            {
+                await _ingredientsService.DeleteById(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException e)
+            {
+                throw new KeyNotFoundException(e.Message);
+            }
         }
     }
 }
