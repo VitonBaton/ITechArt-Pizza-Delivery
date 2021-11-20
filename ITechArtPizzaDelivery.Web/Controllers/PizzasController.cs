@@ -36,17 +36,38 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPizzaWithIngredientsModel>> GetById(int id)
         {
-            var pizza = await _pizzasService.GetById(id);
-            var pizzaView = _mapper.Map<Pizza, GetPizzaWithIngredientsModel>(pizza);
-            return Ok(pizzaView);
+            try
+            {
+                var pizza = await _pizzasService.GetById(id);
+                var pizzaView = _mapper.Map<Pizza, GetPizzaWithIngredientsModel>(pizza);
+                return Ok(pizzaView);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetPizzaWithIngredientsModel>> Post(PostPizzaModel model)
+        public async Task<ActionResult<GetPizzaModel>> Post(PostPizzaModel model)
         {
             var pizza = _mapper.Map<PostPizzaModel, Pizza>(model);
-            var newPizza = await _pizzasService.Post(pizza, model.IngredientsId);
-            return _mapper.Map<GetPizzaWithIngredientsModel>(newPizza);
+            var newPizza = await _pizzasService.Post(pizza);
+            return Ok(_mapper.Map<GetPizzaModel>(newPizza));
+        }
+
+        [HttpPost ("{pizzaId}")]
+        public async Task<ActionResult<GetPizzaWithIngredientsModel>> PostIngredientsToPizza(int pizzaId, [FromBody] PostPizzaIngredientsModel model)
+        {
+            try
+            {
+                var pizza = await _pizzasService.AddIngredientsToPizza(pizzaId, model.IngredientsId);
+                return Ok(_mapper.Map<GetPizzaWithIngredientsModel>(pizza));
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]

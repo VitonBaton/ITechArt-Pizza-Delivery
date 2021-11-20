@@ -11,7 +11,8 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     {
         public Task<List<Pizza>> GetAll();
         public Task<Pizza> GetById(int id);
-        public Task<Pizza> Post(Pizza pizza, int[] ingredientsId);
+        public Task<Pizza> Post(Pizza pizza);
+        public Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId);
         public Task DeleteById(int id);
     }
 }
