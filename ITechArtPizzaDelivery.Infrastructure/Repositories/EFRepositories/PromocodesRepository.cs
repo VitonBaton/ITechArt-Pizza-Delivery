@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
