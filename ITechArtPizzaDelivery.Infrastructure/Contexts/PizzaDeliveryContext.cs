@@ -31,17 +31,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 .Property(o => o.Status)
                 .HasConversion<int>();
 
-            /*modelBuilder.Entity<CartPizza>()
-                .HasKey(cp => new {cp.CartId, cp.PizzaId});
-            modelBuilder.Entity<CartPizza>()
-                .HasOne(cp => cp.Cart)
-                .WithMany(c => c.CartPizzas)
-                .HasForeignKey(cp => cp.CartId);
-            modelBuilder.Entity<CartPizza>()
-                .HasOne(cp => cp.Pizza)
-                .WithMany(p => p.CartPizzas)
-                .HasForeignKey(cp => cp.PizzaId);
-            */
             modelBuilder.Entity<Cart>()
                 .HasMany(c => c.Pizzas)
                 .WithMany(p => p.Carts)
@@ -62,6 +51,17 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                         j.ToTable("carts_pizzas");
                     }
                 );
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u
+                    .HasOne(u => u.Cart)
+                    .WithMany()
+                    .HasForeignKey("CartId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                u.Navigation(u => u.Cart);
+            });
 
             base.OnModelCreating(modelBuilder);
 
