@@ -34,13 +34,22 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 
         public async Task<Promocode> GetById(int id)
         {
-            return await _dbContext.Promocodes.FindAsync(id);
+            var promocode = await _dbContext.Promocodes.FindAsync(id);
+            if (promocode is null)
+            {
+                throw new KeyNotFoundException("Promocode with that id not found");
+            }
+
+            return promocode;
         }
 
         public async Task DeleteById(int id)
         {
-            var promocode = await _dbContext.Promocodes
-                            .FindAsync(id);
+            var promocode = await _dbContext.Promocodes.FindAsync(id);
+            if (promocode is null)
+            {
+                throw new KeyNotFoundException("Promocode with that id not found");
+            }
             _dbContext.Promocodes.Remove(promocode);
             await _dbContext.SaveChangesAsync();
         }

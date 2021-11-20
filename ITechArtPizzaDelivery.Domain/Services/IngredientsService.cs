@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {

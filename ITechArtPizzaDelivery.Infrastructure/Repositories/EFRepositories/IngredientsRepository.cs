@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
@@ -22,7 +21,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 
         public async Task<Ingredient> GetById(int id)
         {
-            return await _dbContext.Ingredients.FindAsync(id);
+            var ingredient = await _dbContext.Ingredients.FindAsync(id);
+            if (ingredient is null)
+            {
+                throw new KeyNotFoundException("Ingredient with that id not found");
+            }
+
+            return ingredient;
         }
 
         public async Task<Ingredient> Post(Ingredient ingredient)
@@ -40,7 +45,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
         public async Task DeleteById(int id)
         {
             var ingredient = await _dbContext.Ingredients.FindAsync(id);
-
+            if (ingredient is null)
+            {
+                throw new KeyNotFoundException("Ingredient with that id not found");
+            }
             _dbContext.Remove(ingredient);
             await _dbContext.SaveChangesAsync();
         }

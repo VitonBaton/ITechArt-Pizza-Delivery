@@ -21,19 +21,40 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
 
         async Task<Pizza> IPizzasRepository.GetById(int id)
         {
-            return await _dbContext.Pizzas
+            var pizza = await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
                 .FirstOrDefaultAsync(p => p.Id == id);
+            if (pizza is null)
+            {
+                throw new KeyNotFoundException("Pizza with that id not found");
+            }
+
+            return pizza;
         }
 
-        public async Task<Pizza> Post(Pizza pizza, int[] ingredientsId)
+        public async Task<Pizza> Post(Pizza pizza)
         {
-            var ingredients = _dbContext.Ingredients
-                                                    .Where(i => ingredientsId.Contains(i.Id));
-            pizza.Ingredients = new List<Ingredient>();
-            pizza.Ingredients.AddRange(ingredients);
-
             _dbContext.Pizzas.Add(pizza);
+            await _dbContext.SaveChangesAsync();
+            return pizza;
+        }
+
+        public async Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId)
+        {
+            var pizza = await _dbContext.Pizzas.FindAsync(pizzaId);
+            if (pizza is null)
+            {
+                throw new KeyNotFoundException("Pizza with that id not found");
+            }
+
+            var ingredients = await _dbContext.Ingredients
+                .Where(i => ingredientsId.Contains(i.Id))
+                .ToListAsync();
+            if (ingredients is null)
+            {
+                throw new KeyNotFoundException("Ingredients with that id not found");
+            }
+            pizza.Ingredients = ingredients;
             await _dbContext.SaveChangesAsync();
             return pizza;
         }
