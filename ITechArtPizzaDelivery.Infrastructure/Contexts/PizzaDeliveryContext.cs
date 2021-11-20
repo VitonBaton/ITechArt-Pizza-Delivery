@@ -64,6 +64,15 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 );
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasData(new User
+                {
+                    Id = 1,
+                    FirstName = "test",
+                    LastName = "user",
+                    Role = Role.User
+                });
         }
     }
 }

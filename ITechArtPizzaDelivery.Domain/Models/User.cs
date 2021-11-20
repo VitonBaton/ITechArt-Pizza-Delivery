@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,12 +15,12 @@ namespace ITechArtPizzaDelivery.Domain.Models
 
     public class User
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public Role Role { get; set; }
-        [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public int? CartId { get; set; }
+        public Cart? Cart { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,20 +22,24 @@ namespace ITechArtPizzaDelivery.Domain.Models
         }
 
         public int Id { get; set; }
+        public int CustomerId { get; set; }
         [ForeignKey("CustomerId")]
         public User Customer { get; set; }
         [Required]
         public string Address { get; set; }
+        public int DeliveryId { get; set; }
         [Required]
         [ForeignKey("DeliveryId")]
         public Delivery Delivery { get; set; }
+        public int PaymentId { get; set; }
         [Required]
         [ForeignKey("PaymentId")]
-        public Payment Payment { get; set; }
+        public Payment? Payment { get; set; }
         [Required]
         public string Comment { get; set; }
+        public int? PromocodeId { get; set; }
         [ForeignKey("PromocodeId")]
-        public Promocode Promocode { get; set; }
+        public Promocode? Promocode { get; set; }
         public DateTime CreateAt { get; set; }
         [Column(TypeName = "decimal(5, 2)")]
         [Required]
