@@ -4,14 +4,16 @@ using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaDeliveryContext))]
-    partial class PizzaDeliveryContextModelSnapshot : ModelSnapshot
+    [Migration("20211124123831_RemoveForeignKeyAttribute")]
+    partial class RemoveForeignKeyAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

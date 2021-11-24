@@ -12,12 +12,7 @@ namespace ITechArtPizzaDelivery.Domain.Models
     public class Cart
     {
         public int Id { get; set; }
-        //public int CustomerId { get; set; }
-        //[Required]
-        //[ForeignKey("CustomerId")]
-        //public User Customer { get; set; }
         public int? OrderId { get; set; }
-        [ForeignKey("OrderId")]
         public Order? Order { get; set; }
         public List<Pizza>? Pizzas { get; set; }
         public List<CartPizza>? CartPizzas { get; set; }

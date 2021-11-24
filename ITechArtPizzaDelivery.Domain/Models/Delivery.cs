@@ -18,6 +18,6 @@ namespace ITechArtPizzaDelivery.Domain.Models
         [Required]
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Price { get; set; }
-        public Order Order { get; set; }
+        public List<Order> Order { get; set; }
     }
 }

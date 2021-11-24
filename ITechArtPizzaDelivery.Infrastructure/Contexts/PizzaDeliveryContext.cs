@@ -63,6 +63,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 u.Navigation(u => u.Cart);
             });
 
+            modelBuilder.Entity<Promocode>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
