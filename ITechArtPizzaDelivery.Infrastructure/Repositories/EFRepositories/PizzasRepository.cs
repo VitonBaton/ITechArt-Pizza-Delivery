@@ -19,7 +19,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             _dbContext = context;
         }
 
-        async Task<Pizza> IPizzasRepository.GetById(int id)
+        public async Task<Pizza> GetById(int id)
         {
             var pizza = await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
@@ -76,7 +76,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        async Task<List<Pizza>> IPizzasRepository.GetAll()
+        public async Task<List<Pizza>> GetAll()
         {
             return await _dbContext.Pizzas.ToListAsync();
         }
