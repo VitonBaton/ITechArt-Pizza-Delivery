@@ -42,7 +42,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
             catch (KeyNotFoundException e)
             {
-                throw new KeyNotFoundException(e.Message);
+                return NotFound(e.Message);
             }
         }
 
@@ -64,7 +64,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
             catch (KeyNotFoundException e)
             {
-                throw new KeyNotFoundException(e.Message);
+                return NotFound(e.Message);
             }
         }
     }

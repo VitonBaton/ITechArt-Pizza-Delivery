@@ -56,7 +56,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPatch("pizzas/{pizzaId}")]
         public async Task<ActionResult> PutPizzaCount(PostPizzaToCartModel model)
         {
             try
@@ -70,7 +70,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("pizzas/{pizzaId}")]
         public async Task<ActionResult> DeletePizzaById(int pizzaId)
         {
             try

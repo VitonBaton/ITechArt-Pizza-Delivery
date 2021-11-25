@@ -9,8 +9,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         Task<List<CartPizza>> AddPizzaToCart(int pizzaId, int customerId, int pizzasCount);
         Task<List<CartPizza>> GetPizzasFromCart(int customerId);
         Task ChangeAmountOfPizza(int pizzaId, int customerId, int pizzasCount);
-
         Task DeleteByPizzaId(int customerId, int pizzaId);
-        //Task<Cart> GetPizzaById(int customerId, int pizzaId);
     }
 }
