@@ -56,7 +56,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             return Ok(_mapper.Map<GetPizzaModel>(newPizza));
         }
 
-        [HttpPost ("{pizzaId}")]
+        [HttpPost ("{pizzaId}/ingredients")]
         public async Task<ActionResult<GetPizzaWithIngredientsModel>> PostIngredientsToPizza(int pizzaId, [FromBody] PostPizzaIngredientsModel model)
         {
             try
