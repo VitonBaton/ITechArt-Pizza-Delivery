@@ -24,6 +24,9 @@ namespace ITechArtPizzaDelivery.Domain.Models
         public int Id { get; set; }
         public int CustomerId { get; set; }
         public User Customer { get; set; }
+        public int CartId { get; set; }
+        [Required]
+        public Cart Cart { get; set; }
         [Required]
         public string Address { get; set; }
         public int DeliveryId { get; set; }
