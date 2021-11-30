@@ -40,11 +40,13 @@ namespace ITechArtPizzaDelivery.Web
             services.AddScoped<IIngredientsService, IngredientsService>();
             services.AddScoped<IPromocodesService, PromocodesService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrdersService, OrdersService>();
             // Infrastructure
             services.AddScoped<IPizzasRepository, PizzasRepository>();
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<IPromocodesRepository, PromocodesRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
 
             services.AddDbContext<PizzaDeliveryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
