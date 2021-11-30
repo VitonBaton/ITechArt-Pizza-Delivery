@@ -12,7 +12,6 @@ namespace ITechArtPizzaDelivery.Domain.Models
     public class Cart
     {
         public int Id { get; set; }
-        public int? OrderId { get; set; }
         public Order? Order { get; set; }
         public List<Pizza>? Pizzas { get; set; }
         public List<CartPizza>? CartPizzas { get; set; }

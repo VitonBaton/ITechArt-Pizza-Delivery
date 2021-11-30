@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Infrastructure.DataSeeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Contexts
@@ -67,6 +68,12 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
+            modelBuilder.Entity<Cart>()
+                .HasOne(c => c.Order)
+                .WithOne(c => c.Cart)
+                .HasForeignKey<Order>(o => o.CartId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
@@ -77,6 +84,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                     LastName = "user",
                     Role = Role.User
                 });
+
+            modelBuilder.Entity<Payment>()
+                .HasData(PaymentSeeds.GetPayments());
+            modelBuilder.Entity<Delivery>()
+                .HasData(DeliverySeeds.GetDeliveries());
         }
     }
 }

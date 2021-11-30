@@ -4,14 +4,16 @@ using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaDeliveryContext))]
-    partial class PizzaDeliveryContextModelSnapshot : ModelSnapshot
+    [Migration("20211129161429_AddOrderToCartRelation")]
+    partial class AddOrderToCartRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +27,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -70,22 +75,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Deliveries");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Pick up pizza from the nearest pizzeria",
-                            Name = "Pick up",
-                            Price = 0m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Fast delivery",
-                            Name = "Courier",
-                            Price = 10m
-                        });
                 });
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Ingredient", b =>
@@ -152,7 +141,8 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
 
                     b.HasIndex("DeliveryId");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("PaymentId")
+                        .IsUnique();
 
                     b.HasIndex("PromocodeId");
 
@@ -175,26 +165,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Pay order online",
-                            Name = "Card online"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Pay order to the courier by card",
-                            Name = "Card"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Pay order to the courier in cash",
-                            Name = "Cash"
-                        });
                 });
 
             modelBuilder.Entity("ITechArtPizzaDelivery.Domain.Models.Pizza", b =>
@@ -332,8 +302,8 @@ namespace ITechArtPizzaDelivery.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("ITechArtPizzaDelivery.Domain.Models.Payment", "Payment")
-                        .WithMany("Order")
-                        .HasForeignKey("PaymentId")
+                        .WithOne("Order")
+                        .HasForeignKey("ITechArtPizzaDelivery.Domain.Models.Order", "PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
