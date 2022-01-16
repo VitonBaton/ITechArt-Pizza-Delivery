@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
@@ -17,7 +18,11 @@ using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web
@@ -41,12 +46,39 @@ namespace ITechArtPizzaDelivery.Web
             services.AddScoped<IPromocodesService, PromocodesService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrdersService, OrdersService>();
+            services.AddScoped<IUsersService, UsersService>();
             // Infrastructure
             services.AddScoped<IPizzasRepository, PizzasRepository>();
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<IPromocodesRepository, PromocodesRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IOrdersRepository, OrdersRepository>();
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+            //        options => Configuration.Bind("JwtSettings", options))
+            //    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+            //        options => Configuration.Bind("CookieSettings", options));
+            
+            
+            services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole<int>>()
+                .AddEntityFrameworkStores<PizzaDeliveryContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(
+                    options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters()
+                        {
+                            ValidateAudience = false,
+                            ValidateIssuer = false,
+                            ValidateLifetime = false,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SUPERMEGAsecretString"))
+                        };
+                    });
 
             services.AddDbContext<PizzaDeliveryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -56,6 +88,21 @@ namespace ITechArtPizzaDelivery.Web
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITechArtPizzaDelivery.Web", Version = "v1" });
+                
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference  
+                    {  
+                        Type = ReferenceType.SecurityScheme,  
+                        Id = "Bearer"  
+                    } 
+                });
             });
         }
 
@@ -73,6 +120,8 @@ namespace ITechArtPizzaDelivery.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

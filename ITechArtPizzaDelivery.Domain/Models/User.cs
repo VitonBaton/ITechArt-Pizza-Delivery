@@ -4,20 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITechArtPizzaDelivery.Domain.Models
 {
-    public enum Role
+    public class User : IdentityUser<int>
     {
-        Admin,
-        User
-    }
-
-    public class User
-    {
-        public int Id { get; set; }
-        [Required]
-        public Role Role { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public int? CartId { get; set; }

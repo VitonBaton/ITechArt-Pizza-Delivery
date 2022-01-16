@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.DataSeeds;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Contexts
 {
-    public class PizzaDeliveryContext :DbContext
+    public class PizzaDeliveryContext :IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Pizza> Pizzas { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Promocode> Promocodes { get; set; }
@@ -76,19 +78,22 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
 
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
+            /*modelBuilder.Entity<User>()
                 .HasData(new User
                 {
                     Id = 1,
                     FirstName = "test",
-                    LastName = "user",
-                    Role = Role.User
+                    LastName = "user"
                 });
-
+            */
             modelBuilder.Entity<Payment>()
                 .HasData(PaymentSeeds.GetPayments());
+
             modelBuilder.Entity<Delivery>()
                 .HasData(DeliverySeeds.GetDeliveries());
+
+            modelBuilder.Entity<IdentityRole<int>>()
+                .HasData(RolesSeeds.Roles);
         }
     }
 }
