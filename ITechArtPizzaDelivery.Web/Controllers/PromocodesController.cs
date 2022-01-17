@@ -9,11 +9,13 @@ using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PromocodesController : ControllerBase
     {
         private readonly IPromocodesService _promocodesService;

@@ -63,5 +63,20 @@ namespace ITechArtPizzaDelivery.Domain.Services
                 throw new KeyNotFoundException("Incorrect login/password");
             }
         }
+        
+        public async Task DeleteAccount(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null)
+            {
+                throw new KeyNotFoundException("User not found");
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new Exception("Error while deleting");
+            }
+        }
     }
 }

@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PizzasController : ControllerBase
     {
         private readonly IPizzasService _pizzasService;

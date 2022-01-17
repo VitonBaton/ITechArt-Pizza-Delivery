@@ -10,9 +10,6 @@ namespace ITechArtPizzaDelivery.Web.MappingConfigurations
         public UsersProfile()
         {
             CreateMap<RegistrationModel, User>();
-            /*CreateMap<JwtSecurityToken, TokenModel>()
-                .ForMember(t => t.Token,
-                    opt => opt.MapFrom(t => t.S .EncodedPayload));*/
         }
     }
 }

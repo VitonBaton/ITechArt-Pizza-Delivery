@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -20,6 +22,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
+        private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public UsersController(IUsersService service, IMapper mapper)
         {
@@ -27,7 +30,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<ActionResult> Register(RegistrationModel model)
         {
             try
@@ -41,7 +44,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<TokenModel>> Login(LoginModel model)
         {
             try
@@ -54,5 +57,14 @@ namespace ITechArtPizzaDelivery.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<ActionResult> DeleteAccount()
+        {
+            await _usersService.DeleteAccount(UserId);
+            return Ok();
+        }
+        
     }
 }

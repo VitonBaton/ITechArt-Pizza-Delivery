@@ -17,7 +17,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
-        //public DbSet<User> Users { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Promocode> Promocodes { get; set; }
@@ -77,15 +76,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(modelBuilder);
-
-            /*modelBuilder.Entity<User>()
-                .HasData(new User
-                {
-                    Id = 1,
-                    FirstName = "test",
-                    LastName = "user"
-                });
-            */
+            
             modelBuilder.Entity<Payment>()
                 .HasData(PaymentSeeds.GetPayments());
 

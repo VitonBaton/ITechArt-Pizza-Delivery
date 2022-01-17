@@ -9,5 +9,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     {
         Task Register(User user, string password);
         Task<string> Login(string username, string password, string secretKey);
+        Task DeleteAccount(int userId);
     }
 }

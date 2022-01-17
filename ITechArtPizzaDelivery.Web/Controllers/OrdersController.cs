@@ -3,20 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly IOrdersRepository _ordersService;
         private readonly IMapper _mapper;
+        private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
         public OrdersController(IOrdersRepository service, IMapper mapper)
         {
@@ -29,7 +33,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         {
             try
             {
-                var order = await _ordersService.CreateNewOrder(1, model.Address, model.DeliveryId, model.PaymentId,
+                var order = await _ordersService.CreateNewOrder(UserId, model.Address, model.DeliveryId, model.PaymentId,
                     model.Comment);
                 return Ok(_mapper.Map<GetPlacedOrderModel>(order));
             }
@@ -58,7 +62,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         {
             try
             {
-                var orders = await _ordersService.GetCustomerOrders(1);
+                var orders = await _ordersService.GetCustomerOrders(UserId);
                 return Ok(_mapper.Map<List<GetOrderWithPizzasModel>>(orders));
             }
             catch (KeyNotFoundException e)
