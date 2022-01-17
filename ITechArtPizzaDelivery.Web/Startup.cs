@@ -18,6 +18,7 @@ using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories;
+using ITechArtPizzaDelivery.Web.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +67,7 @@ namespace ITechArtPizzaDelivery.Web
                 .AddEntityFrameworkStores<PizzaDeliveryContext>()
                 .AddDefaultTokenProviders();
 
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(
                     options =>
@@ -107,7 +109,11 @@ namespace ITechArtPizzaDelivery.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserManager<User> userManager,
+            RoleManager<IdentityRole<int>> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -128,6 +134,9 @@ namespace ITechArtPizzaDelivery.Web
             {
                 endpoints.MapControllers();
             });
+            
+            DbInitializer.SeedRoles(roleManager);
+            DbInitializer.SeedUsers(userManager);
         }
     }
 }

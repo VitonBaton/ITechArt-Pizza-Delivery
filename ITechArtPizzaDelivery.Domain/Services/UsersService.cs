@@ -28,6 +28,12 @@ namespace ITechArtPizzaDelivery.Domain.Services
             {
                 throw new Exception(result.Errors.First().Description);
             }
+
+            result = await _userManager.AddToRoleAsync(user, "User");
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.First().Description);
+            }
         }
 
         public async Task<string> Login(string username, string password, string secretKey)

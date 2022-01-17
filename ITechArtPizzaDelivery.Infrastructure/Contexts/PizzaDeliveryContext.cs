@@ -91,9 +91,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
 
             modelBuilder.Entity<Delivery>()
                 .HasData(DeliverySeeds.GetDeliveries());
-
-            modelBuilder.Entity<IdentityRole<int>>()
-                .HasData(RolesSeeds.Roles);
         }
     }
 }
