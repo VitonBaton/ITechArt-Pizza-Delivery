@@ -15,7 +15,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles="Admin,User")]
     public class PizzasController : ControllerBase
     {
         private readonly IPizzasService _pizzasService;
@@ -50,6 +50,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles="Admin")]
         [HttpPost]
         public async Task<ActionResult<GetPizzaModel>> Post(PostPizzaModel model)
         {
@@ -58,6 +59,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             return Ok(_mapper.Map<GetPizzaModel>(newPizza));
         }
 
+        [Authorize(Roles="Admin")]
         [HttpPost ("{pizzaId}/ingredients")]
         public async Task<ActionResult<GetPizzaWithIngredientsModel>> PostIngredientsToPizza(int pizzaId, [FromBody] PostPizzaIngredientsModel model)
         {
@@ -72,6 +74,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {

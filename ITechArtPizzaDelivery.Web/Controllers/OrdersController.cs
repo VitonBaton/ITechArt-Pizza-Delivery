@@ -15,7 +15,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin,User")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrdersRepository _ordersService;
@@ -28,6 +28,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<ActionResult<GetPlacedOrderModel>> PostOrder(PostOrderModel model)
         {
@@ -43,6 +44,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
         [HttpPatch("{orderId}/cancel")]
         public async Task<IActionResult> CancelOrder(int orderId)
         {
@@ -57,6 +59,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<List<GetOrderWithPizzasModel>>> GetOrders()
         {
@@ -71,6 +74,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
         [HttpPatch("{orderId}/promocode")]
         public async Task<IActionResult> PatchPromocodeToOrder(int orderId, [FromBody]AddPromocodeToOrderModel promocode)
         {
@@ -89,6 +93,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public async Task<ActionResult<List<GetUserWithOrdersModel>>> GetAllUsersWithOrder()
         {

@@ -15,7 +15,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class PromocodesController : ControllerBase
     {
         private readonly IPromocodesService _promocodesService;

@@ -59,7 +59,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult> DeleteAccount()
         {
             await _usersService.DeleteAccount(UserId);

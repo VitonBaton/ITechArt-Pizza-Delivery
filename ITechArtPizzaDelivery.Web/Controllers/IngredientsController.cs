@@ -14,7 +14,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class IngredientsController : ControllerBase
     {
         private readonly IIngredientsService _ingredientsService;

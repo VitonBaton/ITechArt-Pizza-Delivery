@@ -17,7 +17,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "User")]
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
