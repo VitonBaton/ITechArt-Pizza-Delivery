@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -75,7 +76,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
-                throw new Exception("Error while deleting");
+                throw new ServerErrorException("Error while deleting");
             }
         }
     }

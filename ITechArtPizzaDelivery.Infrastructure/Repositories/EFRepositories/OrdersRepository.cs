@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
@@ -27,11 +28,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var customer = await _dbContext.Users
                 .Include(u=>u.Cart)
                 .ThenInclude(c => c.Pizzas)
-                .FirstAsync(u => u.Id == customerId);
+                .FirstOrDefaultAsync(u => u.Id == customerId);
 
             if (customer is null)
             {
-                throw new KeyNotFoundException("Customer with that id not found");
+                throw new KeyNotFoundException("Customer not found");
             }
 
             if (customer.Cart is null)
@@ -56,6 +57,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var price = customer.Cart.Pizzas?
                 .Sum(p => p.Price);
 
+            if (price is null)
+            {
+                throw new ServerErrorException("Can't calculate price");
+            }
+            
             var order = new Order()
             {
                 Customer = customer,
@@ -100,7 +106,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 .Include(u => u.Orders)
                     .ThenInclude(o => o.Cart)
                         .ThenInclude(c => c.Pizzas)
-                .FirstAsync(u => u.Id == customerId);
+                .FirstOrDefaultAsync(u => u.Id == customerId);
 
             if (customer is null)
             {
@@ -114,7 +120,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
         {
             var order = await _dbContext.Orders
                 .Include(o => o.Promocode)
-                .FirstAsync(o => o.Id == orderId);
+                .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if (order is null)
             {
@@ -123,11 +129,11 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 
             if (order.Promocode is not null)
             {
-                throw new Exception("Order already has a promocode");
+                throw new BadRequestException("Order already has a promocode");
             }
 
             var promocode = await _dbContext.Promocodes
-                .FirstAsync(p => p.Name.Equals(promocodeName));
+                .FirstOrDefaultAsync(p => p.Name.Equals(promocodeName));
 
             if (promocode is null)
             {

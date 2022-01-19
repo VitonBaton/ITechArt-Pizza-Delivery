@@ -8,7 +8,7 @@ using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace ITechArtPizzaDelivery.Infrastructure.Repositories
+namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 {
     public class PizzasRepository : IPizzasRepository
     {
@@ -26,7 +26,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (pizza is null)
             {
-                throw new KeyNotFoundException("Pizza with that id not found");
+                throw new KeyNotFoundException("Pizza not found");
             }
 
             return pizza;
@@ -43,10 +43,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
         {
             var pizza = await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
-                .FirstAsync(p => p.Id == pizzaId);
+                .FirstOrDefaultAsync(p => p.Id == pizzaId);
             if (pizza is null)
             {
-                throw new KeyNotFoundException("Pizza with that id not found");
+                throw new KeyNotFoundException("Pizza not found");
             }
 
             var pizzaIngredientsId = pizza.Ingredients.Select(i => i.Id).ToList();
@@ -57,7 +57,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
                 .ToListAsync();
             if (ingredients.Count == 0)
             {
-                throw new KeyNotFoundException("New ingredients with that id not found");
+                throw new KeyNotFoundException("New ingredients not found");
             }
 
             pizza.Ingredients.AddRange(ingredients);
@@ -70,7 +70,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories
             var pizza = await _dbContext.Pizzas.FindAsync(id);
             if (pizza is null)
             {
-                throw new KeyNotFoundException("Pizza with that id not found");
+                throw new KeyNotFoundException("Pizza not found");
             }
             _dbContext.Pizzas.Remove(pizza);
             await _dbContext.SaveChangesAsync();

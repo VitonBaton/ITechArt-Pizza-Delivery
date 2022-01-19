@@ -24,7 +24,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var ingredient = await _dbContext.Ingredients.FindAsync(id);
             if (ingredient is null)
             {
-                throw new KeyNotFoundException("Ingredient with that id not found");
+                throw new KeyNotFoundException("Ingredient not found");
             }
 
             return ingredient;
@@ -47,7 +47,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var ingredient = await _dbContext.Ingredients.FindAsync(id);
             if (ingredient is null)
             {
-                throw new KeyNotFoundException("Ingredient with that id not found");
+                throw new KeyNotFoundException("Ingredient not found");
             }
             _dbContext.Remove(ingredient);
             await _dbContext.SaveChangesAsync();

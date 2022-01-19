@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Errors;
 using Microsoft.AspNetCore.Http;
 
 namespace ITechArtPizzaDelivery.Web.Utils
@@ -28,11 +29,12 @@ namespace ITechArtPizzaDelivery.Web.Utils
 
                 response.StatusCode = error switch
                 {
-                    KeyNotFoundException e => (int)HttpStatusCode.NotFound,
-                    _ => (int)HttpStatusCode.InternalServerError
+                    KeyNotFoundException => (int) HttpStatusCode.NotFound,
+                    BadRequestException => (int) HttpStatusCode.BadRequest,
+                    _ => (int) HttpStatusCode.InternalServerError
                 };
                 
-                await response.WriteAsJsonAsync(new { message= error?.Message });
+                await response.WriteAsJsonAsync(new { message= error.Message });
             }
         }
     }
