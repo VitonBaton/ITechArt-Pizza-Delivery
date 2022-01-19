@@ -33,29 +33,15 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegistrationModel model)
         {
-            try
-            {
-                await _usersService.Register(_mapper.Map<User>(model), model.Password);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            await _usersService.Register(_mapper.Map<User>(model), model.Password);
+            return Ok();
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<TokenModel>> Login(LoginModel model)
         {
-            try
-            {
-                var token = await _usersService.Login(model.Login, model.Password, "SUPERMEGAsecretString");
-                return Ok(new TokenModel{Token = token});
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var token = await _usersService.Login(model.Login, model.Password, "SUPERMEGAsecretString");
+            return Ok(new TokenModel { Token = token });
         }
 
         [HttpDelete]
