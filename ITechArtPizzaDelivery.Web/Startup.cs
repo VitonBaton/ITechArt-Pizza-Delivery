@@ -21,6 +21,7 @@ using ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories;
 using ITechArtPizzaDelivery.Web.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -125,7 +126,9 @@ namespace ITechArtPizzaDelivery.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            
             app.UseAuthentication();
             
             app.UseAuthorization();
