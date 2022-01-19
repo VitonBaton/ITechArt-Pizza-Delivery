@@ -58,7 +58,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 .FirstOrDefaultAsync(u => u.Id == userId);
             if (user is null)
             {
-                throw new KeyNotFoundException("user with that id not found");
+                throw new KeyNotFoundException("User not found");
             }
 
             if (user.Cart is null)
@@ -77,7 +77,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 .FirstOrDefaultAsync(u => u.Id == customerId);
             if (user is null)
             {
-                throw new KeyNotFoundException("User with that id not found");
+                throw new KeyNotFoundException("User not found");
             }
 
             var cartPizza = user.Cart?.CartPizzas?.Find(cp => cp.PizzaId == pizzaId);
@@ -98,7 +98,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 .FirstOrDefaultAsync(u => u.Id == customerId);
             if (user is null)
             {
-                throw new KeyNotFoundException("User with that id not found");
+                throw new KeyNotFoundException("User not found");
             }
 
             var cartPizza = user.Cart?.CartPizzas?.Find(cp => cp.PizzaId == pizzaId);

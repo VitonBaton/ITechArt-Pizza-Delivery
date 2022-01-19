@@ -30,64 +30,32 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             _mapper = mapper;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<List<GetCartModel>>> GetAll()
         {
-            try
-            {
-                return _mapper.Map<List<GetCartModel>>(await _cartService.GetPizzasFromCart(UserId));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            return _mapper.Map<List<GetCartModel>>(await _cartService.GetPizzasFromCart(UserId));
         }
 
         [HttpPost]
         public async Task<ActionResult<List<GetCartModel>>> Post(PostPizzaToCartModel model)
         {
-            try
-            {
-                var cart = await _cartService.AddPizzaToCart(model.PizzaId, UserId, model.PizzasCount);
-                return Ok(_mapper.Map<List<GetCartModel>>(cart));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var cart = await _cartService.AddPizzaToCart(model.PizzaId, UserId, model.PizzasCount);
+            return Ok(_mapper.Map<List<GetCartModel>>(cart));
         }
 
         [HttpPatch("pizzas/{pizzaId}")]
         public async Task<ActionResult> PutPizzaCount(PostPizzaToCartModel model)
         {
-            try
-            {
-                await _cartService.ChangeAmountOfPizza(model.PizzaId, UserId, model.PizzasCount);
-                return Ok();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _cartService.ChangeAmountOfPizza(model.PizzaId, UserId, model.PizzasCount);
+            return Ok();
         }
 
         [HttpDelete("pizzas/{pizzaId}")]
         public async Task<ActionResult> DeletePizzaById(int pizzaId)
         {
-            try
-            {
-                await _cartService.DeleteByPizzaId(UserId, pizzaId);
-                return Ok();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _cartService.DeleteByPizzaId(UserId, pizzaId);
+            return Ok();
         }
     }
 }

@@ -38,16 +38,9 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPizzaWithIngredientsModel>> GetById(int id)
         {
-            try
-            {
-                var pizza = await _pizzasService.GetById(id);
-                var pizzaView = _mapper.Map<Pizza, GetPizzaWithIngredientsModel>(pizza);
-                return Ok(pizzaView);
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var pizza = await _pizzasService.GetById(id);
+            var pizzaView = _mapper.Map<Pizza, GetPizzaWithIngredientsModel>(pizza);
+            return Ok(pizzaView);
         }
 
         [Authorize(Roles="Admin")]
@@ -59,34 +52,21 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             return Ok(_mapper.Map<GetPizzaModel>(newPizza));
         }
 
-        [Authorize(Roles="Admin")]
-        [HttpPost ("{pizzaId}/ingredients")]
-        public async Task<ActionResult<GetPizzaWithIngredientsModel>> PostIngredientsToPizza(int pizzaId, [FromBody] PostPizzaIngredientsModel model)
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{pizzaId}/ingredients")]
+        public async Task<ActionResult<GetPizzaWithIngredientsModel>> PostIngredientsToPizza(int pizzaId,
+            [FromBody] PostPizzaIngredientsModel model)
         {
-            try
-            {
-                var pizza = await _pizzasService.AddIngredientsToPizza(pizzaId, model.IngredientsId);
-                return Ok(_mapper.Map<GetPizzaWithIngredientsModel>(pizza));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var pizza = await _pizzasService.AddIngredientsToPizza(pizzaId, model.IngredientsId);
+            return Ok(_mapper.Map<GetPizzaWithIngredientsModel>(pizza));
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(int id)
         {
-            try
-            {
-                await _pizzasService.DeleteById(id);
-                return Ok();
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _pizzasService.DeleteById(id);
+            return Ok();
         }
 
     }

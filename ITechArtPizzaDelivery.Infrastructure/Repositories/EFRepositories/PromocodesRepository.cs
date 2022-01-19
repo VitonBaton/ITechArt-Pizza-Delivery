@@ -36,7 +36,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var promocode = await _dbContext.Promocodes.FindAsync(id);
             if (promocode is null)
             {
-                throw new KeyNotFoundException("Promocode with that id not found");
+                throw new KeyNotFoundException("Promocode not found");
             }
 
             return promocode;
@@ -47,7 +47,7 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             var promocode = await _dbContext.Promocodes.FindAsync(id);
             if (promocode is null)
             {
-                throw new KeyNotFoundException("Promocode with that id not found");
+                throw new KeyNotFoundException("Promocode not found");
             }
             _dbContext.Promocodes.Remove(promocode);
             await _dbContext.SaveChangesAsync();
