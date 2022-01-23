@@ -51,7 +51,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 
         public async Task<List<CartPizza>> GetPizzasFromCart(int userId)
         {
-            // after adding authorization method will return pizzas that in cart of current user
             var user = await _dbContext.Users
                 .Include(u => u.Cart)
                 .ThenInclude(c=>c.Pizzas)
@@ -69,24 +68,9 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             return user.Cart.CartPizzas;
         }
 
-        public async Task ChangeAmountOfPizza(int pizzaId, int customerId, int pizzasCount)
+        public async Task Update(CartPizza cartPizza)
         {
-            var user = await _dbContext.Users
-                .Include(u => u.Cart)
-                .ThenInclude(c=>c.CartPizzas)
-                .FirstOrDefaultAsync(u => u.Id == customerId);
-            if (user is null)
-            {
-                throw new KeyNotFoundException("User not found");
-            }
-
-            var cartPizza = user.Cart?.CartPizzas?.Find(cp => cp.PizzaId == pizzaId);
-            if (user.Cart is null || cartPizza is null)
-            {
-                throw new KeyNotFoundException("There is no that pizza in the cart");
-            }
-
-            cartPizza.Count = pizzasCount;
+            _dbContext.Entry(cartPizza).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
 
@@ -107,6 +91,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 throw new KeyNotFoundException("There is no that pizza in the cart");
             }
             _dbContext.Remove(cartPizza);
+            if (user.Cart.CartPizzas.Count == 1)
+            {
+                _dbContext.Remove(user.Cart);
+            }
             await _dbContext.SaveChangesAsync();
         }
     }

@@ -30,7 +30,16 @@ namespace ITechArtPizzaDelivery.Domain.Services
 
         public async Task ChangeAmountOfPizza(int pizzaId, int customerId, int pizzasCount)
         {
-            await _cartRepository.ChangeAmountOfPizza(pizzaId, customerId, pizzasCount);
+            var userPizzas = await _cartRepository.GetPizzasFromCart(customerId);
+
+            var cartPizza = userPizzas.Find(cp => cp.PizzaId == pizzaId);
+            if (cartPizza is null)
+            {
+                throw new KeyNotFoundException("There is no that pizza in the cart");
+            }
+
+            cartPizza.Count = pizzasCount;
+            await _cartRepository.Update(cartPizza);
         }
 
         public async Task DeleteByPizzaId(int customerId, int pizzaId)

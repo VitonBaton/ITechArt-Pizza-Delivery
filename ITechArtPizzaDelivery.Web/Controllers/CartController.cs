@@ -44,18 +44,18 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             return Ok(_mapper.Map<List<GetCartModel>>(cart));
         }
 
-        [HttpPatch("pizzas/{pizzaId}")]
+        [HttpPatch("pizzas")]
         public async Task<ActionResult> PutPizzaCount(PostPizzaToCartModel model)
         {
             await _cartService.ChangeAmountOfPizza(model.PizzaId, UserId, model.PizzasCount);
-            return Ok();
+            return Ok("Pizza count successfully changed");
         }
 
         [HttpDelete("pizzas/{pizzaId}")]
         public async Task<ActionResult> DeletePizzaById(int pizzaId)
         {
             await _cartService.DeleteByPizzaId(UserId, pizzaId);
-            return Ok();
+            return Ok("Pizza successfully removed");
         }
     }
 }
