@@ -10,9 +10,9 @@ namespace ITechArtPizzaDelivery.Domain.Services
 {
     public class IngredientsService : IIngredientsService
     {
-        private readonly IIngredientsRepository _ingredientsRepository;
+        private readonly IGenericRepository<Ingredient> _ingredientsRepository;
 
-        public IngredientsService(IIngredientsRepository ingredientsRepository)
+        public IngredientsService(IGenericRepository<Ingredient> ingredientsRepository)
         {
             _ingredientsRepository = ingredientsRepository;
         }
@@ -28,12 +28,12 @@ namespace ITechArtPizzaDelivery.Domain.Services
         }
         public async Task<Ingredient> Post(Ingredient ingredient)
         {
-            return await _ingredientsRepository.Post(ingredient);
+            return await _ingredientsRepository.Insert(ingredient);
         }
 
         public async Task DeleteById(int id)
         {
-            await _ingredientsRepository.DeleteById(id);
+            await _ingredientsRepository.Delete(id);
         }
     }
 }

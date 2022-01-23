@@ -50,8 +50,10 @@ namespace ITechArtPizzaDelivery.Web
             services.AddScoped<IOrdersService, OrdersService>();
             services.AddScoped<IUsersService, UsersService>();
             // Infrastructure
+            services.AddScoped<IGenericRepository<Pizza>, GenericRepository<Pizza>>();
+            services.AddScoped<IGenericRepository<Ingredient>, GenericRepository<Ingredient>>();
+            services.AddScoped<IGenericRepository<Promocode>, GenericRepository<Promocode>>();
             services.AddScoped<IPizzasRepository, PizzasRepository>();
-            services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<IPromocodesRepository, PromocodesRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IOrdersRepository, OrdersRepository>();
