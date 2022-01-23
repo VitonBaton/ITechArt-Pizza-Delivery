@@ -7,16 +7,16 @@ namespace ITechArtPizzaDelivery.Domain.Services
 {
     public class PromocodesService : IPromocodesService
     {
-        private readonly IPromocodesRepository _promocodesRepository;
+        private readonly IGenericRepository<Promocode> _promocodesRepository;
 
-        public PromocodesService(IPromocodesRepository promocodesRepository)
+        public PromocodesService(IGenericRepository<Promocode> promocodesRepository)
         {
             _promocodesRepository = promocodesRepository;
         }
 
         public async Task DeleteById(int id)
         {
-            await _promocodesRepository.DeleteById(id);
+            await _promocodesRepository.Delete(id);
         }
 
         public async Task<List<Promocode>> GetAll()
@@ -31,7 +31,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
 
         public async Task<Promocode> Post(Promocode promocode)
         {
-            return await _promocodesRepository.Post(promocode);
+            return await _promocodesRepository.Insert(promocode);
         }
     }
 }
