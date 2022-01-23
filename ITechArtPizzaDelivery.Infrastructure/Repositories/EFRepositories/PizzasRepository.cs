@@ -10,16 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 {
-    public class PizzasRepository : IPizzasRepository
+    public class PizzasRepository : GenericRepository<Pizza>, IPizzasRepository
     {
-        private readonly PizzaDeliveryContext _dbContext;
-
-        public PizzasRepository(PizzaDeliveryContext context)
+        public PizzasRepository(PizzaDeliveryContext context) : base(context)
         {
-            _dbContext = context;
         }
 
-        public async Task<Pizza> GetById(int id)
+        public async Task<Pizza> GetPizzaWithIngredients(int id)
         {
             var pizza = await _dbContext.Pizzas
                 .Include(p => p.Ingredients)
@@ -29,13 +26,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
                 throw new KeyNotFoundException("Pizza not found");
             }
 
-            return pizza;
-        }
-
-        public async Task<Pizza> Post(Pizza pizza)
-        {
-            _dbContext.Pizzas.Add(pizza);
-            await _dbContext.SaveChangesAsync();
             return pizza;
         }
 
@@ -63,22 +53,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             pizza.Ingredients.AddRange(ingredients);
             await _dbContext.SaveChangesAsync();
             return pizza;
-        }
-
-        public async Task DeleteById(int id)
-        {
-            var pizza = await _dbContext.Pizzas.FindAsync(id);
-            if (pizza is null)
-            {
-                throw new KeyNotFoundException("Pizza not found");
-            }
-            _dbContext.Pizzas.Remove(pizza);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<List<Pizza>> GetAll()
-        {
-            return await _dbContext.Pizzas.ToListAsync();
         }
     }
 }

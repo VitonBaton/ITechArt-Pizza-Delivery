@@ -7,12 +7,9 @@ using ITechArtPizzaDelivery.Domain.Models;
 
 namespace ITechArtPizzaDelivery.Domain.Interfaces
 {
-    public interface IPizzasRepository
+    public interface IPizzasRepository : IGenericRepository<Pizza>
     {
-        public Task<List<Pizza>> GetAll();
-        public Task<Pizza> GetById(int id);
-        public Task<Pizza> Post(Pizza pizza);
-        public Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId);
-        public Task DeleteById(int id);
+        public Task<Pizza> GetPizzaWithIngredients(int id);
+        //public Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId);
     }
 }
