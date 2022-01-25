@@ -29,10 +29,6 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>()
-                .Property(o => o.Status)
-                .HasConversion<int>();
-
             modelBuilder.Entity<Cart>()
                 .HasMany(c => c.Pizzas)
                 .WithMany(p => p.Carts)
@@ -75,6 +71,10 @@ namespace ITechArtPizzaDelivery.Infrastructure.Contexts
                 .HasForeignKey<Order>(o => o.CartId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status)
+                .HasConversion<string>();
+            
             base.OnModelCreating(modelBuilder);
             
             modelBuilder.Entity<Payment>()

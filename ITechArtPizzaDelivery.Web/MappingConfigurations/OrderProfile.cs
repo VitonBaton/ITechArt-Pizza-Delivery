@@ -15,7 +15,8 @@ namespace ITechArtPizzaDelivery.Web.MappingConfigurations
             CreateMap<Order, GetOrderModel>();
             CreateMap<PostOrderModel, Order>();
             CreateMap<Order, GetOrderWithPizzasModel>()
-                .ForMember(o => o.Pizzas, opt => opt.MapFrom(o => o.Cart.CartPizzas));
+                .ForMember(o => o.Pizzas, opt => opt.MapFrom(o => o.Cart.CartPizzas))
+                .ForMember(o => o.Status, opt => opt.MapFrom(o => o.Status.ToString()));
             CreateMap<Order, GetPlacedOrderModel>();
             CreateMap<User, GetUserWithOrdersModel>()
                 .ForMember(u => u.FullName, opt => opt.MapFrom(u => u.FirstName + " " + u.LastName));
