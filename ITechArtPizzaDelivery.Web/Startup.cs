@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Domain.Services;
@@ -19,6 +21,7 @@ using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories;
 using ITechArtPizzaDelivery.Web.Utils;
+using ITechArtPizzaDelivery.Web.Validators;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -84,8 +87,14 @@ namespace ITechArtPizzaDelivery.Web
             services.AddDbContext<PizzaDeliveryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddControllers(opt =>
+                {
+                    opt.Filters.Add(typeof(ValidatorActionFilter));
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>())
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ITechArtPizzaDelivery.Web", Version = "v1" });
@@ -125,7 +134,7 @@ namespace ITechArtPizzaDelivery.Web
 
             app.UseRouting();
             
-            //app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             
             app.UseAuthentication();
             

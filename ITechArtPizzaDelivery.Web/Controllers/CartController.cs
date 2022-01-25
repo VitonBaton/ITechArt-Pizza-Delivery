@@ -34,7 +34,7 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetCartModel>>> GetAll()
         {
-            return _mapper.Map<List<GetCartModel>>(await _cartService.GetPizzasFromCart(UserId));
+            return Ok(_mapper.Map<List<GetCartModel>>(await _cartService.GetPizzasFromCart(UserId)));
         }
 
         [HttpPost]
