@@ -18,11 +18,11 @@ namespace ITechArtPizzaDelivery.Web.Controllers
     [Authorize(Roles = "Admin,User")]
     public class OrdersController : ControllerBase
     {
-        private readonly IOrdersRepository _ordersService;
+        private readonly IOrdersService _ordersService;
         private readonly IMapper _mapper;
         private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        public OrdersController(IOrdersRepository service, IMapper mapper)
+        public OrdersController(IOrdersService service, IMapper mapper)
         {
             _ordersService = service;
             _mapper = mapper;
@@ -30,67 +30,59 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public async Task<ActionResult<GetPlacedOrderModel>> PostOrder(PostOrderModel model)
+        public async Task<ActionResult<GetOrderWithPizzasModel>> PostOrder(PostOrderModel model)
         {
-            try
-            {
-                var order = await _ordersService.CreateNewOrder(UserId, model.Address, model.DeliveryId, model.PaymentId,
-                    model.Comment);
-                return Ok(_mapper.Map<GetPlacedOrderModel>(order));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var order = await _ordersService.CreateNewOrder(UserId, _mapper.Map<Order>(model));
+            return Ok(_mapper.Map<GetOrderWithPizzasModel>(order));
         }
 
         [Authorize(Roles = "User")]
         [HttpPatch("{orderId}/cancel")]
         public async Task<IActionResult> CancelOrder(int orderId)
         {
-            try
-            {
-                await _ordersService.CancelOrder(orderId);
-                return Ok("Order successfully canceled");
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            await _ordersService.CancelOrder(UserId, orderId);
+            return Ok("Order successfully canceled");
+        }
+        
+        [Authorize(Roles = "User")]
+        [HttpPatch("{orderId}/pay")]
+        public async Task<IActionResult> PayOrder(int orderId)
+        {
+            await _ordersService.PayOrder(UserId, orderId);
+            return Ok("Order successfully payed");
+        }
+        
+        [Authorize(Roles = "User")]
+        [HttpPatch("{orderId}/deliver")]
+        public async Task<IActionResult> DeliverOrder(int orderId)
+        {
+            await _ordersService.DeliverOrder(UserId, orderId);
+            return Ok("Order successfully delivered");
         }
 
         [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<ActionResult<List<GetOrderWithPizzasModel>>> GetOrders()
         {
-            try
-            {
-                var orders = await _ordersService.GetCustomerOrders(UserId);
-                return Ok(_mapper.Map<List<GetOrderWithPizzasModel>>(orders));
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var orders = await _ordersService.GetCustomerOrders(UserId);
+            return Ok(_mapper.Map<List<GetOrderWithPizzasModel>>(orders));
         }
 
         [Authorize(Roles = "User")]
         [HttpPatch("{orderId}/promocode")]
-        public async Task<IActionResult> PatchPromocodeToOrder(int orderId, [FromBody]AddPromocodeToOrderModel promocode)
+        public async Task<ActionResult<AddingPromocodeResult>> PatchPromocodeToOrder(int orderId,
+            [FromBody] AddPromocodeToOrderModel promocode)
         {
-            try
-            {
-                await _ordersService.AddPromocodeToOrder(orderId, promocode.PromocodeName);
-                return Ok("Promocode successfully added");
-            }
-            catch (KeyNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var result = await _ordersService.AddPromocodeToOrder(UserId, orderId, promocode.PromocodeName);
+            return Ok(new AddingPromocodeResult(){NewPrice = result});
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete("{orderId}/promocode")]
+        public async Task<ActionResult<AddingPromocodeResult>> RemovePromocodeFromOrder(int orderId)
+        {
+            var result = await _ordersService.RemovePromocodeFromOrder(UserId, orderId);
+            return Ok(new AddingPromocodeResult(){NewPrice = result});
         }
 
         [Authorize(Roles = "Admin")]

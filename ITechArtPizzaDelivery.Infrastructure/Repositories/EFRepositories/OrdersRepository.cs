@@ -14,13 +14,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
 {
-    public class OrdersRepository : IOrdersRepository
+    public class OrdersRepository : GenericRepository<Order>, IOrdersRepository
     {
-        private readonly PizzaDeliveryContext _dbContext;
-
-        public OrdersRepository(PizzaDeliveryContext context)
+        public OrdersRepository(PizzaDeliveryContext context) : base(context)
         {
-            _dbContext = context;
         }
 
         public async Task<Order> CreateNewOrder(int customerId, string address, int deliveryId, int paymentId, string comment)
@@ -114,6 +111,24 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             }
 
             return customer.Orders;
+        }
+
+        public async Task<Order> GetOrderOfCustomer(int customerId, int orderId)
+        {
+            var order = await _dbContext.Orders
+                .Where(o => o.CustomerId == customerId && o.Id == orderId)
+                .Include(o => o.Promocode)
+                .Include(o => o.Delivery)
+                .Include(o => o.Payment)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Pizzas)
+                .FirstOrDefaultAsync();
+
+            if (order is null)
+            {
+                throw new KeyNotFoundException("Order not found");
+            }
+            return order;
         }
 
         public async Task AddPromocodeToOrder(int orderId, string promocodeName)

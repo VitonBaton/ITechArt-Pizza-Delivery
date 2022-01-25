@@ -53,22 +53,19 @@ namespace ITechArtPizzaDelivery.Web
             services.AddScoped<IGenericRepository<Pizza>, GenericRepository<Pizza>>();
             services.AddScoped<IGenericRepository<Ingredient>, GenericRepository<Ingredient>>();
             services.AddScoped<IGenericRepository<Promocode>, GenericRepository<Promocode>>();
+            services.AddScoped<IGenericRepository<Delivery>, GenericRepository<Delivery>>();
+            services.AddScoped<IGenericRepository<Payment>, GenericRepository<Payment>>();
+            services.AddScoped<IGenericRepository<Order>, GenericRepository<Order>>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
+            services.AddScoped<IPromocodesRepository, PromocodesRepository>();
             services.AddScoped<IPizzasRepository, PizzasRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<IOrdersRepository, OrdersRepository>();
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
-            //        options => Configuration.Bind("JwtSettings", options))
-            //    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-            //        options => Configuration.Bind("CookieSettings", options));
-            
-            
             services.AddIdentityCore<User>()
                 .AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<PizzaDeliveryContext>()
                 .AddDefaultTokenProviders();
-
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(
@@ -128,7 +125,7 @@ namespace ITechArtPizzaDelivery.Web
 
             app.UseRouting();
             
-            app.UseMiddleware<ErrorHandlerMiddleware>();
+            //app.UseMiddleware<ErrorHandlerMiddleware>();
             
             app.UseAuthentication();
             

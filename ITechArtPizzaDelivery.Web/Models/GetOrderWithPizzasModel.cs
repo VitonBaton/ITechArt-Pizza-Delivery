@@ -17,6 +17,6 @@ namespace ITechArtPizzaDelivery.Web.Models
         public DateTime CreateAt { get; set; }
         public decimal Price { get; set; }
         public Order.StatusType Status { get; set; }
-        public List<GetPizzaModel> Pizzas { get; set; }
+        public List<GetCartModel> Pizzas { get; set; }
     }
 }
