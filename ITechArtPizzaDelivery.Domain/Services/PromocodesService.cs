@@ -7,9 +7,9 @@ namespace ITechArtPizzaDelivery.Domain.Services
 {
     public class PromocodesService : IPromocodesService
     {
-        private readonly IGenericRepository<Promocode> _promocodesRepository;
+        private readonly IPromocodesRepository _promocodesRepository;
 
-        public PromocodesService(IGenericRepository<Promocode> promocodesRepository)
+        public PromocodesService(IPromocodesRepository promocodesRepository)
         {
             _promocodesRepository = promocodesRepository;
         }
