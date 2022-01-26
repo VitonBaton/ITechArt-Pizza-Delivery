@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +22,13 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
         public async Task<List<T>> GetAll()
         {
             return await _table.ToListAsync();
+        }
+
+        public async Task<PagedList<T>> GetAll(PagingParameters parameters)
+        {
+            var result = await PagedList<T>
+                .CreateAsync(_table.AsNoTracking(), parameters.PageNumber, parameters.PageSize);
+            return result;
         }
 
         public async Task<T> GetById(int id)
