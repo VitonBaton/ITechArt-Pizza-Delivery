@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using ITechArtPizzaDelivery.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
+using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -50,6 +52,26 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         {
             await _usersService.DeleteAccount(UserId);
             return Ok();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<User>>> GetAll([FromQuery] PagingParameters parameters)
+        {
+            var users = await _usersService.GetAll(parameters);
+            
+            var metadata = new
+            {
+                users.TotalCount,
+                users.PageSize,
+                users.CurrentPage,
+                users.TotalPages,
+                users.HasNext,
+                users.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(users);
         }
         
     }

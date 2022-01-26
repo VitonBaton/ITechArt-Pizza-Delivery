@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ITechArtPizzaDelivery.Domain.Services
@@ -78,6 +80,16 @@ namespace ITechArtPizzaDelivery.Domain.Services
             {
                 throw new ServerErrorException("Error while deleting");
             }
+        }
+
+        public async Task<PagedList<User>> GetAll(PagingParameters parameters)
+        {
+            var result =
+                await PagedList<User>.CreateAsync(
+                    _userManager.Users.AsNoTracking(),
+                    parameters.PageNumber,
+                    parameters.PageSize);
+            return result;
         }
     }
 }

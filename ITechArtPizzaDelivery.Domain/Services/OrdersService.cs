@@ -7,6 +7,7 @@ using ITechArtPizzaDelivery.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ITechArtPizzaDelivery.Domain.Pagination;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
@@ -135,9 +136,9 @@ namespace ITechArtPizzaDelivery.Domain.Services
             await _ordersRepository.Update(order);
         }
 
-        public async Task<List<Order>> GetCustomerOrders(int customerId)
+        public async Task<PagedList<Order>> GetCustomerOrders(int customerId, PagingParameters parameters)
         {
-            return await _ordersRepository.GetCustomerOrders(customerId);
+            return await _ordersRepository.GetCustomerOrders(customerId, parameters);
         }
 
         public async Task<decimal> AddPromocodeToOrder(int customerId, int orderId, string promocodeName)
@@ -181,9 +182,9 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return order.Price;
         }
         
-        public async Task<List<User>> GetAllUsersAndOrders()
+        public async Task<PagedList<User>> GetAllUsersAndOrders(PagingParameters parameters)
         {
-            return await _ordersRepository.GetAllUsersAndOrders();
+            return await _ordersRepository.GetAllUsersAndOrders(parameters);
         }
     }
 

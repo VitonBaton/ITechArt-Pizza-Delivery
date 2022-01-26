@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -28,9 +30,22 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<GetPizzaModel>>> GetAll()
+        public async Task<ActionResult<List<GetPizzaModel>>> GetAll([FromQuery] PagingParameters parameters)
         {
-            var pizzas = await _pizzasService.GetAll();
+            var pizzas = await _pizzasService.GetAll(parameters);
+            
+            var metadata = new
+            {
+                pizzas.TotalCount,
+                pizzas.PageSize,
+                pizzas.CurrentPage,
+                pizzas.TotalPages,
+                pizzas.HasNext,
+                pizzas.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            
             var pizzasView = _mapper.Map<List<Pizza>, List<GetPizzaModel>>(pizzas);
             return Ok(pizzasView);
         }

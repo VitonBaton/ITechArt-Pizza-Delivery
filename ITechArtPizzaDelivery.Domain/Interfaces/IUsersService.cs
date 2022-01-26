@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using Microsoft.AspNetCore.Identity;
 
 namespace ITechArtPizzaDelivery.Domain.Interfaces
@@ -10,5 +11,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         Task Register(User user, string password);
         Task<string> Login(string username, string password, string secretKey);
         Task DeleteAccount(int userId);
+        Task<PagedList<User>> GetAll(PagingParameters parameters);
     }
 }
