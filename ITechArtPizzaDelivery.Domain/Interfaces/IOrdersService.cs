@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 
 namespace ITechArtPizzaDelivery.Domain.Interfaces
 {
@@ -10,9 +11,9 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         Task CancelOrder(int customerId, int orderId);
         Task DeliverOrder(int customerId, int orderId);
         Task PayOrder(int customerId, int orderId);
-        Task<List<Order>> GetCustomerOrders(int customerId);
+        Task<PagedList<Order>> GetCustomerOrders(int customerId, PagingParameters parameters);
         Task<decimal> AddPromocodeToOrder(int customerId, int orderId, string promocodeName);
         Task<decimal> RemovePromocodeFromOrder(int customerId, int orderId);
-        Task<List<User>> GetAllUsersAndOrders();
+        Task<PagedList<User>> GetAllUsersAndOrders(PagingParameters parameters);
     }
 }

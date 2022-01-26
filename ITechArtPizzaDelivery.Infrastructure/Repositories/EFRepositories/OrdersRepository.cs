@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
@@ -91,26 +92,28 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Order>> GetCustomerOrders(int customerId)
+        public async Task<PagedList<Order>> GetCustomerOrders(int customerId, PagingParameters parameters)
         {
             var customer = await _dbContext.Users
-                .Include(u => u.Orders)
-                    .ThenInclude(o => o.Delivery)
-                .Include(u => u.Orders)
-                    .ThenInclude(o => o.Payment)
-                .Include(u => u.Orders)
-                    .ThenInclude(o => o.Promocode)
-                .Include(u => u.Orders)
-                    .ThenInclude(o => o.Cart)
-                        .ThenInclude(c => c.Pizzas)
-                .FirstOrDefaultAsync(u => u.Id == customerId);
-
+                .FindAsync(customerId);
             if (customer is null)
             {
                 throw new KeyNotFoundException("Customer with that id not found");
             }
 
-            return customer.Orders;
+            var orders = _dbContext.Entry(customer)
+                .Collection(u => u.Orders)
+                .Query()
+                .Include(o => o.Delivery)
+                .Include(o => o.Payment)
+                .Include(o => o.Promocode)
+                .Include(o => o.Cart)
+                    .ThenInclude(c => c.Pizzas);
+            
+            return await PagedList<Order>.CreateAsync(
+                orders.AsQueryable(),
+                parameters.PageNumber,
+                parameters.PageSize);
         }
 
         public async Task<Order> GetOrderOfCustomer(int customerId, int orderId)
@@ -161,16 +164,16 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<User>> GetAllUsersAndOrders()
+        public async Task<PagedList<User>> GetAllUsersAndOrders(PagingParameters parameters)
         {
-            var users = await _dbContext.Users
+            var usersQuery = _dbContext.Users
                 .Include(u => u.Orders)
-                    .ThenInclude(o => o.Delivery)
+                .ThenInclude(o => o.Delivery)
                 .Include(u => u.Orders)
-                    .ThenInclude(o => o.Payment)
-                .ToListAsync();
+                .ThenInclude(o => o.Payment)
+                .AsQueryable();
 
-            return users;
+            return await PagedList<User>.CreateAsync(usersQuery, parameters.PageNumber, parameters.PageSize);
         }
     }
 }

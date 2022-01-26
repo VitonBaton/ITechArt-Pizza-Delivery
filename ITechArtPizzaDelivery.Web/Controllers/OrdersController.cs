@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 using ITechArtPizzaDelivery.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
 {
@@ -62,9 +64,23 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 
         [Authorize(Roles = "User")]
         [HttpGet]
-        public async Task<ActionResult<List<GetOrderWithPizzasModel>>> GetOrders()
+        public async Task<ActionResult<List<GetOrderWithPizzasModel>>> GetOrders(
+            [FromQuery] PagingParameters parameters)
         {
-            var orders = await _ordersService.GetCustomerOrders(UserId);
+            var orders = await _ordersService.GetCustomerOrders(UserId, parameters);
+            
+            var metadata = new
+            {
+                orders.TotalCount,
+                orders.PageSize,
+                orders.CurrentPage,
+                orders.TotalPages,
+                orders.HasNext,
+                orders.HasPrevious
+            };
+            
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            
             return Ok(_mapper.Map<List<GetOrderWithPizzasModel>>(orders));
         }
 
@@ -87,9 +103,23 @@ namespace ITechArtPizzaDelivery.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("all")]
-        public async Task<ActionResult<List<GetUserWithOrdersModel>>> GetAllUsersWithOrder()
+        public async Task<ActionResult<List<GetUserWithOrdersModel>>> GetAllUsersWithOrder(
+            [FromQuery] PagingParameters parameters)
         {
-            var users = await _ordersService.GetAllUsersAndOrders();
+            var users = await _ordersService.GetAllUsersAndOrders(parameters);
+            
+            var metadata = new
+            {
+                users.TotalCount,
+                users.PageSize,
+                users.CurrentPage,
+                users.TotalPages,
+                users.HasNext,
+                users.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            
             return Ok(_mapper.Map<List<GetUserWithOrdersModel>>(users));
         }
     }
