@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
+using ITechArtPizzaDelivery.Domain.Pagination;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
@@ -21,6 +22,11 @@ namespace ITechArtPizzaDelivery.Domain.Services
         public async Task<List<Pizza>> GetAll()
         {
             return await _pizzasRepository.GetAll();
+        }
+
+        public async Task<PagedList<Pizza>> GetAll(PagingParameters parameters)
+        {
+            return await _pizzasRepository.GetAll(parameters);
         }
 
         public async Task<Pizza> GetById(int id)
