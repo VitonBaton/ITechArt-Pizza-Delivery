@@ -11,6 +11,7 @@ using ITechArtPizzaDelivery.Domain.Services;
 using ITechArtPizzaDelivery.Infrastructure.Repositories;
 using ITechArtPizzaDelivery.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
 
 namespace ITechArtPizzaDelivery.Web.Controllers
@@ -74,6 +75,22 @@ namespace ITechArtPizzaDelivery.Web.Controllers
         {
             var pizza = await _pizzasService.AddIngredientsToPizza(pizzaId, model.IngredientsId);
             return Ok(_mapper.Map<GetPizzaWithIngredientsModel>(pizza));
+        }
+        
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{pizzaId}/image")]
+        public async Task<IActionResult> PostImageToPizza(int pizzaId, IFormFile image)
+        {
+            
+            await _pizzasService.AddImageToPizza(pizzaId, image);
+            return Ok("Image successfully uploaded");
+        }
+        
+        [HttpGet("{pizzaId}/image")]
+        public async Task<IActionResult> DownloadImageOfPizza(int pizzaId)
+        {
+            var image = await _pizzasService.DownloadImage(pizzaId);
+            return File(image, "application/image");
         }
 
         [Authorize(Roles = "Admin")]

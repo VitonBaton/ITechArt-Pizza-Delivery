@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
+using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Infrastructure.Contexts;
@@ -27,6 +30,26 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             }
 
             return pizza;
+        }
+
+        public async Task DeleteByIdWithImage(int pizzaId)
+        {
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            var pizza = await GetById(pizzaId);
+            _dbContext.Pizzas.Remove(pizza);
+            await _dbContext.SaveChangesAsync();
+
+            if (pizza.Image is not null)
+            {
+                if (!File.Exists(pizza.Image))
+                {
+                    throw new ServerErrorException("Can't find image");
+                }
+                
+                File.Delete(pizza.Image);
+            }
+
+            await transaction.CommitAsync();
         }
 
         public async Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId)

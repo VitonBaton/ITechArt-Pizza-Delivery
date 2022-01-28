@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ITechArtPizzaDelivery.Domain.Errors;
 using ITechArtPizzaDelivery.Domain.Interfaces;
 using ITechArtPizzaDelivery.Domain.Models;
 using ITechArtPizzaDelivery.Domain.Pagination;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
 
 namespace ITechArtPizzaDelivery.Domain.Services
 {
@@ -57,9 +61,41 @@ namespace ITechArtPizzaDelivery.Domain.Services
             return pizza;
         }
 
+        public async Task AddImageToPizza(int pizzaId, IFormFile image)
+        {
+            var pizza = await _pizzasRepository.GetById(pizzaId);
+
+            if (pizza.Image is not null)
+            {
+                throw new BadRequestException("Pizza already has an image");
+            }
+            
+            var path = "./Images/" + Guid.NewGuid();
+            await using (var fileStream = new FileStream(path, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            pizza.Image = path;
+            await _pizzasRepository.Update(pizza);
+        }
+
+        public async Task<FileStream> DownloadImage(int pizzaId)
+        {
+            var pizza = await _pizzasRepository.GetById(pizzaId);
+
+            if (pizza.Image is null)
+            {
+                throw new BadRequestException("Pizza has not image");
+            }
+            
+            var fileStream = new FileStream(pizza.Image, FileMode.Open);
+            return fileStream;
+        }
+        
         public async Task DeleteById(int id)
         {
-            await _pizzasRepository.Delete(id);
+            await _pizzasRepository.DeleteByIdWithImage(id);
         }
     }
 }
