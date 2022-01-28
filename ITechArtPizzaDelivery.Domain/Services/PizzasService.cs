@@ -95,7 +95,7 @@ namespace ITechArtPizzaDelivery.Domain.Services
         
         public async Task DeleteById(int id)
         {
-            await _pizzasRepository.Delete(id);
+            await _pizzasRepository.DeleteByIdWithImage(id);
         }
     }
 }

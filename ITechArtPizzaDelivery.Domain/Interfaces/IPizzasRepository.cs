@@ -10,6 +10,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     public interface IPizzasRepository : IGenericRepository<Pizza>
     {
         public Task<Pizza> GetPizzaWithIngredients(int id);
-        //public Task<Pizza> AddIngredientsToPizza(int pizzaId, int[] ingredientsId);
+        public Task DeleteByIdWithImage(int pizzaId);
     }
 }
