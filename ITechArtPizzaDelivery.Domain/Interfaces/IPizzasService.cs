@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using ITechArtPizzaDelivery.Domain.Models;
@@ -17,5 +18,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
         public Task AddImageToPizza(int pizzaId, IFormFile image);
         public Task<FileStream> DownloadImage(int pizzaId);
         public Task DeleteById(int id);
+        public Task<Pizza> FindMostPopularForChosenMonth(DateTime time);
     }
 }

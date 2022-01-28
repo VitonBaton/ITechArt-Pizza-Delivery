@@ -50,6 +50,14 @@ namespace ITechArtPizzaDelivery.Web.Controllers
             var pizzasView = _mapper.Map<List<Pizza>, List<GetPizzaModel>>(pizzas);
             return Ok(pizzasView);
         }
+        
+        [HttpGet("popular")]
+        public async Task<ActionResult<GetPizzaModel>> FindMostPopularPizza([FromQuery] DateTime time)
+        {
+            var pizza = await _pizzasService.FindMostPopularForChosenMonth(time);
+            var pizzaView = _mapper.Map<Pizza, GetPizzaModel>(pizza);
+            return Ok(pizzaView);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<GetPizzaWithIngredientsModel>> GetById(int id)

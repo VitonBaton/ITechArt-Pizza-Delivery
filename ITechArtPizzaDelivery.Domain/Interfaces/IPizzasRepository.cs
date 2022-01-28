@@ -11,5 +11,6 @@ namespace ITechArtPizzaDelivery.Domain.Interfaces
     {
         public Task<Pizza> GetPizzaWithIngredients(int id);
         public Task DeleteByIdWithImage(int pizzaId);
+        public Task<Pizza> FindMostPopularForChosenMonth(DateTime time);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -76,6 +77,28 @@ namespace ITechArtPizzaDelivery.Infrastructure.Repositories.EFRepositories
             pizza.Ingredients.AddRange(ingredients);
             await _dbContext.SaveChangesAsync();
             return pizza;
+        }
+
+        public async Task<Pizza> FindMostPopularForChosenMonth(DateTime time)
+        {
+            
+            const string query = @"SELECT p.*
+                                    FROM Pizzas p
+                                    JOIN carts_pizzas cp on p.Id = cp.PizzaId
+                                    JOIN Carts C on C.Id = cp.CartId
+                                    JOIN Orders O on C.Id = O.CartId
+                                    WHERE DATEDIFF(month,O.CreateAt, {0}) = 0
+                                    GROUP BY p.Id, p.Image, p.Name, p.Price
+                                    ORDER BY COUNT(o.Id) DESC";
+            var pizzas = await _dbContext.Pizzas
+                .FromSqlRaw(query, time.ToString(CultureInfo.InvariantCulture))
+                .ToListAsync();
+
+            if (pizzas.Count == 0)
+            {
+                throw new ServerErrorException("Can't find any pizza order in this month");
+            }
+            return pizzas.First();
         }
     }
 }

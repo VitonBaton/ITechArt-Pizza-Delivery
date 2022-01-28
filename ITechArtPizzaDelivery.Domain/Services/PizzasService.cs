@@ -97,5 +97,10 @@ namespace ITechArtPizzaDelivery.Domain.Services
         {
             await _pizzasRepository.DeleteByIdWithImage(id);
         }
+
+        public async Task<Pizza> FindMostPopularForChosenMonth(DateTime time)
+        {
+            return await _pizzasRepository.FindMostPopularForChosenMonth(time);
+        }
     }
 }
