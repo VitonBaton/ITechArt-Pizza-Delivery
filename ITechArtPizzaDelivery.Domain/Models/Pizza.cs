@@ -12,7 +12,6 @@ namespace ITechArtPizzaDelivery.Domain.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
         public string Image { get; set; }
         [Required]
         [Column(TypeName = "decimal(5, 2)")]
